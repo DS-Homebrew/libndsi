@@ -35,7 +35,7 @@ distribution.
 #include <nds/fifocommon.h>
 #include <nds/interrupts.h>
 #include <nds/fifomessages.h>
-#include <libnds_internal.h>
+#include <libndsi_internal.h>
 
 //todo document
 //

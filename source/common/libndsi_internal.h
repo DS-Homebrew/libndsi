@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------------
 
-	libnds_internal.h -- internal variables for libnds
+	libndsi_internal.h -- internal variables for libndsi
 
 	Copyright (C) 2005 - 2008
 		Dave Murphy (WinterMute)
@@ -24,8 +24,8 @@
 
 ---------------------------------------------------------------------------------*/
 
-#ifndef _libnds_internal_h_
-#define _libnds_internal_h_
+#ifndef _libndsi_internal_h_
+#define _libndsi_internal_h_
 //---------------------------------------------------------------------------------
 #include <time.h>
 #include <nds/arm9/input.h>

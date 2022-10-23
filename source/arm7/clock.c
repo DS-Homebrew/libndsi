@@ -29,7 +29,7 @@
 #include "nds/interrupts.h"
 #include "nds/ipc.h"
 #include "nds/system.h"
-#include "libnds_internal.h"
+#include "libndsi_internal.h"
 
 #include <time.h>
 

@@ -37,12 +37,12 @@ distribution.
 #include <nds/interrupts.h>
 #include <nds/fifocommon.h>
 #include <time.h>
-#include <libnds_internal.h>
+#include <libndsi_internal.h>
 
 #include <sys/iosupport.h>
 #include <sys/time.h>
 
-void __libnds_exit(int rc);
+void __libndsi_exit(int rc);
 bool __dsimode; // set in crt0
 
 time_t *punixTime;
@@ -67,7 +67,7 @@ int __SYSCALL(gettod_r)(struct _reent *ptr, struct timeval *tp, struct timezone 
 //---------------------------------------------------------------------------------
 void __SYSCALL(exit)(int rc) {
 //---------------------------------------------------------------------------------
-	__libnds_exit(rc);
+	__libndsi_exit(rc);
 }
 
 

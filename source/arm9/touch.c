@@ -28,7 +28,7 @@
 #include <nds/ipc.h>
 #include <nds/arm9/input.h>
 #include <nds/fifocommon.h>
-#include <libnds_internal.h>
+#include <libndsi_internal.h>
 
 
 //---------------------------------------------------------------------------------

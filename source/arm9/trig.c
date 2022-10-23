@@ -43,32 +43,32 @@ the luts then implement a quarter of a circle, cause its enough to calculate the
 
 #define LUT_SIZE		LUT_QUARTER_ANGLE
 
-//a libnds angle has 32768 degrees (16 bits long, signed) with an range of [-32768 - 32767]
+//a libndsi angle has 32768 degrees (16 bits long, signed) with an range of [-32768 - 32767]
 //(32768, 0 and -32768 al describe the same angle)
-#define LIBNDS_ANGLE_BITS		15
-#define LIBNDS_ANGLE			(1<<LIBNDS_ANGLE_BITS)
-#define LIBNDS_ANGLE_MASK		(LIBNDS_ANGLE-1)
+#define LIBNDSI_ANGLE_BITS		15
+#define LIBNDSI_ANGLE			(1<<LIBNDSI_ANGLE_BITS)
+#define LIBNDSI_ANGLE_MASK		(LIBNDSI_ANGLE-1)
 
 
-//the number of bits that is used by a libnds angle but gets chopped off with a lut angle.
-#define ANGLE_FRACTION_BITS (LIBNDS_ANGLE_BITS - LUT_ANGLE_BITS)
+//the number of bits that is used by a libndsi angle but gets chopped off with a lut angle.
+#define ANGLE_FRACTION_BITS (LIBNDSI_ANGLE_BITS - LUT_ANGLE_BITS)
 #define ANGLE_FRACTION		(1<<ANGLE_FRACTION_BITS)
 #define ANGLE_FRACTION_MASK	(ANGLE_FRACTION-1)
 
 
-#define LIBNDS_QUARTER_ANGLE (LUT_QUARTER_ANGLE << ANGLE_FRACTION_BITS)
+#define LIBNDSI_QUARTER_ANGLE (LUT_QUARTER_ANGLE << ANGLE_FRACTION_BITS)
 
 
 /*
-when getting an libnds angle, you should first convert it to a 15 bit unsigned number,
+when getting an libndsi angle, you should first convert it to a 15 bit unsigned number,
 so you only have a positive angle and it doesn't affect the outcome (-270 degree == 90 degree)
 */
-#define TO_POSITIVE_ANGLE(angle)	(((angle) < 0) ? (LIBNDS_ANGLE + (angle)) : (angle))
+#define TO_POSITIVE_ANGLE(angle)	(((angle) < 0) ? (LIBNDSI_ANGLE + (angle)) : (angle))
 
 /*
-to convert a libnds angle to a lut angle, you must shift it right so it fits in a lut angle and mask of any bits that doesn't fit:
+to convert a libndsi angle to a lut angle, you must shift it right so it fits in a lut angle and mask of any bits that doesn't fit:
 */
-#define LIBNDS_TO_LUT_ANGLE(angle)	 (((angle) >> ANGLE_FRACTION_BITS) & LUT_ANGLE_MASK)
+#define LIBNDSI_TO_LUT_ANGLE(angle)	 (((angle) >> ANGLE_FRACTION_BITS) & LUT_ANGLE_MASK)
 
 
 //the number of bits used for the fractional part.
@@ -126,7 +126,7 @@ const s32 TAN_LUT[LUT_SIZE+1] = {
 s32 sinLutLookup(int i)
 {
 	//i = (i >> ANGLE_FRACTION_BITS) & 511;
-	i = LIBNDS_TO_LUT_ANGLE(i);
+	i = LIBNDSI_TO_LUT_ANGLE(i);
 
 	int lutVal = i & LUT_QUARTER_ANGLE_MASK;
 
@@ -156,12 +156,12 @@ s16 sinLerp(s16 angle)
 
 s16 cosLerp(s16 angle)
 {
-	return sinLerp(angle + LIBNDS_QUARTER_ANGLE); // Cos/sin symmetry
+	return sinLerp(angle + LIBNDSI_QUARTER_ANGLE); // Cos/sin symmetry
 }
 
 s32 tanLutLookup(int i)
 {
-	//convert from libnds to lut angle, and making sure the angle is in the first half of the circle
+	//convert from libndsi to lut angle, and making sure the angle is in the first half of the circle
 	i = (i >> ANGLE_FRACTION_BITS) & 255;
 
  	int lutVal = i & LUT_QUARTER_ANGLE_MASK;
@@ -178,7 +178,7 @@ s32 tanLerp(s16 angle)
 {
 	angle = TO_POSITIVE_ANGLE(angle);
 	//s32 lut_val = (angle >> ANGLE_FRACTION_BITS) & 511;
-	int lutVal = LIBNDS_TO_LUT_ANGLE(angle);
+	int lutVal = LIBNDSI_TO_LUT_ANGLE(angle);
 
 	s32 prev = ((lutVal == 128 || lutVal == 384) ? -MAX_TAN: tanLutLookup(angle));
 	s32 next = tanLutLookup(angle + ANGLE_FRACTION);
@@ -231,7 +231,7 @@ s16 asinLerp(s16 par)
 
 	if(param > SIN_LUT[LUT_SIZE])
 	{
-		return (neg ? -LIBNDS_QUARTER_ANGLE : LIBNDS_QUARTER_ANGLE);
+		return (neg ? -LIBNDSI_QUARTER_ANGLE : LIBNDSI_QUARTER_ANGLE);
 	}
 
 	u16* lutIndexPointer = (u16*)bsearch(&param, SIN_LUT, LUT_SIZE + 1, sizeof(u16), asinComp);
@@ -251,7 +251,7 @@ s16 asinLerp(s16 par)
 s16 acosLerp(s16 par)
 {
 	//Uses the identity sin(x) = cos(90 - x) => asin(x) = 90 - acos(x)
-	return LIBNDS_QUARTER_ANGLE - asinLerp(par); // returns a value in [0, 256]
+	return LIBNDSI_QUARTER_ANGLE - asinLerp(par); // returns a value in [0, 256]
 }
 
 

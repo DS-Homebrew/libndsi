@@ -38,10 +38,10 @@ ASFLAGS	:=	-g $(ARCH)
 ASFLAGS	+=	$(INCLUDE)
 
 ifneq ($(BUILD),debug)
-export ARM7BIN	:=	$(TOPDIR)/lib/libnds7.a
+export ARM7BIN	:=	$(TOPDIR)/lib/libndsi7.a
 CFLAGS	+=	-DNDEBUG
 else
-export ARM7BIN	:=	$(TOPDIR)/lib/libnds7d.a
+export ARM7BIN	:=	$(TOPDIR)/lib/libndsi7d.a
 CFLAGS	+=	-DDEBUG
 endif
 
@@ -106,7 +106,7 @@ $(BUILD):
 clean:
 	@echo clean ...
 	@rm -fr debug release
-	@rm -f $(TOPDIR)/lib/libnds7*
+	@rm -f $(TOPDIR)/lib/libndsi7*
 
 all: $(ARM7BIN) 
  

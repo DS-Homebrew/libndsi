@@ -7,3 +7,4 @@ lib
 docs
 warn.log
 *.bz2
+*.DS_Store

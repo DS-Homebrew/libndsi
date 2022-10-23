@@ -94,9 +94,9 @@ extern "C" {
 #define floorFixed(n, bits) ((int)((n) & ~(((1 << (bits)) - 1))))
 
 
-//! convert an angle in 360 degree format to the format used by libnds.
+//! convert an angle in 360 degree format to the format used by libndsi.
 #define degreesToAngle(degrees) ((degrees) * DEGREES_IN_CIRCLE / 360)
-//! converts an angle in the format used by libnds in the 360 degree format.
+//! converts an angle in the format used by libndsi in the 360 degree format.
 #define angleToDegrees(angle)   ((angle) * 360 / DEGREES_IN_CIRCLE)
 
 

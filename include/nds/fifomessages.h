@@ -30,7 +30,7 @@
 #include "ndstypes.h"
 #include <nds/touch.h>
 
-/* internal fifo messages utilized by libnds. */
+/* internal fifo messages utilized by libndsi. */
 
 typedef enum {
 	SOUND_PLAY_MESSAGE = 0x1234,

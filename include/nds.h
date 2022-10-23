@@ -31,11 +31,11 @@
 */
 
 /*!
- \mainpage Libnds Documentation
+ \mainpage Libndsi Documentation
 
 
  \section intro Introduction
- Welcome to the libnds reference documentation.
+ Welcome to the libndsi reference documentation.
 
  \section video_2D_api 2D engine API
  - \ref video.h "General video"

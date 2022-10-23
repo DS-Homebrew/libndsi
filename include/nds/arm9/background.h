@@ -38,7 +38,7 @@
     - \ref background_register_group "Register Access Components"
 
     The DS contains two separate hardware 2D cores responsible for rendering 2D backgrounds.  The definitions
-    below outline the libnds api for utilizing these backgrounds.
+    below outline the libndsi api for utilizing these backgrounds.
 
     The background engine provides basic initialization and management of the 8 2D backgrounds available on the DS.
     Other than initialization and hardware limitations background control is identical on both main and sub screens.

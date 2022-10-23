@@ -1,2 +1,3 @@
-[![Build Status](https://travis-ci.org/devkitPro/libnds.svg?branch=master)](https://travis-ci.org/devkitPro/libnds)
+# libndsi
 
+Fork of [libnds](https://github.com/devkitPro/libnds)

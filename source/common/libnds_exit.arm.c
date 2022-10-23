@@ -1,5 +1,5 @@
 #include <nds/system.h>
-#include <libnds_internal.h>
+#include <libndsi_internal.h>
 
 extern char *fake_heap_end;
 
@@ -7,7 +7,7 @@ void __attribute__((weak)) systemErrorExit(int rc) {
 	
 }
 
-void __libnds_exit(int rc) {
+void __libndsi_exit(int rc) {
 
 	if (rc != 0) {
 		systemErrorExit(rc);

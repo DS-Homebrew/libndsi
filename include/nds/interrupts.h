@@ -146,7 +146,7 @@ extern	vuint32	__irq_flagsaux[];
 struct IntTable{IntFn handler; u32 mask;};
 
 /*! \fn irqInit()
-	\brief Initialise the libnds interrupt system.
+	\brief Initialise the libndsi interrupt system.
 
 	This function is called internally (prior to main()) to set up irqs
     on the ARM9.  It must be called on the ARM7 prior to installing irq
@@ -183,7 +183,7 @@ void irqClearAUX(u32 irq);
 	\brief Install a user interrupt dispatcher.
 
 	This function installs the main interrupt function, all interrupts are serviced through this routine. For most
-	purposes the libnds interrupt dispacther should be used in preference to user code unless you know *exactly* what you're doing.
+	purposes the libndsi interrupt dispacther should be used in preference to user code unless you know *exactly* what you're doing.
 
 	\param handler Address of the function to use as an interrupt dispatcher
 	\note the function *must* be ARM code

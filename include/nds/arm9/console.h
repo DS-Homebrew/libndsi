@@ -171,7 +171,7 @@ typedef struct PrintConsole
 }PrintConsole;
 
 
-//! Console debug devices supported by libnds.
+//! Console debug devices supported by libndsi.
 typedef enum
 {
 	DebugDevice_NULL = 0x0,		//!< swallows prints to stderr

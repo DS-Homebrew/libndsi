@@ -4,12 +4,12 @@ endif
 
 export TOPDIR	:=	$(CURDIR)
 
-export LIBNDS_MAJOR	:= 1
-export LIBNDS_MINOR	:= 8
-export LIBNDS_PATCH	:= 0
+export LIBNDSI_MAJOR	:= 1
+export LIBNDSI_MINOR	:= 8
+export LIBNDSI_PATCH	:= 0
 
 
-VERSION	:=	$(LIBNDS_MAJOR).$(LIBNDS_MINOR).$(LIBNDS_PATCH)
+VERSION	:=	$(LIBNDSI_MAJOR).$(LIBNDSI_MINOR).$(LIBNDSI_PATCH)
 
 
 .PHONY: release debug clean all docs
@@ -42,20 +42,20 @@ clean:
 #-------------------------------------------------------------------------------
 dist-src:
 #-------------------------------------------------------------------------------
-	@tar --exclude=*CVS* --exclude=.svn -cjf libnds-src-$(VERSION).tar.bz2 arm7/Makefile arm9/Makefile source include icon.bmp Makefile libnds_license.txt Doxyfile
+	@tar --exclude=*CVS* --exclude=.svn -cjf libndsi-src-$(VERSION).tar.bz2 arm7/Makefile arm9/Makefile source include icon.bmp Makefile libndsi_license.txt Doxyfile
 
 #-------------------------------------------------------------------------------
 dist-bin: all
 #-------------------------------------------------------------------------------
-	@tar --exclude=*CVS* --exclude=.svn -cjf libnds-$(VERSION).tar.bz2 include lib icon.bmp libnds_license.txt
+	@tar --exclude=*CVS* --exclude=.svn -cjf libndsi-$(VERSION).tar.bz2 include lib icon.bmp libndsi_license.txt
 
 dist: dist-bin dist-src
 
 #-------------------------------------------------------------------------------
 install: dist-bin
 #-------------------------------------------------------------------------------
-	mkdir -p $(DESTDIR)$(DEVKITPRO)/libnds
-	bzip2 -cd libnds-$(VERSION).tar.bz2 | tar -xf - -C $(DESTDIR)$(DEVKITPRO)/libnds
+	mkdir -p $(DESTDIR)$(DEVKITPRO)/libndsi
+	bzip2 -cd libndsi-$(VERSION).tar.bz2 | tar -xf - -C $(DESTDIR)$(DEVKITPRO)/libndsi
 
 #---------------------------------------------------------------------------------
 docs:
@@ -66,15 +66,15 @@ docs:
 #---------------------------------------------------------------------------------
 include/nds/libversion.h : Makefile
 #---------------------------------------------------------------------------------
-	@echo "#ifndef __LIBNDSVERSION_H__" > $@
-	@echo "#define __LIBNDSVERSION_H__" >> $@
+	@echo "#ifndef __LIBNDSIVERSION_H__" > $@
+	@echo "#define __LIBNDSIVERSION_H__" >> $@
 	@echo >> $@
-	@echo "#define _LIBNDS_MAJOR_	$(LIBNDS_MAJOR)" >> $@
-	@echo "#define _LIBNDS_MINOR_	$(LIBNDS_MINOR)" >> $@
-	@echo "#define _LIBNDS_PATCH_	$(LIBNDS_PATCH)" >> $@
+	@echo "#define _LIBNDSI_MAJOR_	$(LIBNDSI_MAJOR)" >> $@
+	@echo "#define _LIBNDSI_MINOR_	$(LIBNDSI_MINOR)" >> $@
+	@echo "#define _LIBNDSI_PATCH_	$(LIBNDSI_PATCH)" >> $@
 	@echo >> $@
-	@echo '#define _LIBNDS_STRING "libNDS Release '$(LIBNDS_MAJOR).$(LIBNDS_MINOR).$(LIBNDS_PATCH)'"' >> $@
+	@echo '#define _LIBNDSI_STRING "libNDSi Release '$(LIBNDSI_MAJOR).$(LIBNDSI_MINOR).$(LIBNDSI_PATCH)'"' >> $@
 	@echo >> $@
-	@echo "#endif // __LIBNDSVERSION_H__" >> $@
+	@echo "#endif // __LIBNDSIVERSION_H__" >> $@
 
 

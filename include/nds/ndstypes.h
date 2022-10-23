@@ -27,13 +27,13 @@
 
 ---------------------------------------------------------------------------------*/
 /*! \file ndstypes.h
-	\brief Custom types employed by libnds
+	\brief Custom types employed by libndsi
 */
 
 #ifndef _NDSTYPES_INCLUDE
 #define _NDSTYPES_INCLUDE
 //---------------------------------------------------------------------------------
-// define libnds types in terms of stdint
+// define libndsi types in terms of stdint
 #include <stdint.h>
 #include <stdbool.h>
 

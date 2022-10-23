@@ -20,7 +20,7 @@
 
       "buildcmd": [
         "doxygen",
-	"echo libnds.devkitpro.org > docs/html/CNAME"
+	"echo libndsi.ds-homebrew.com > docs/html/CNAME"
       ],
 
       "artifacts": [{
