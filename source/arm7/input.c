@@ -13,51 +13,38 @@ enum{
 }Keys;
 
 void inputGetAndSend(void){
-
-	static bool penDown = false;
 	static int sleepCounter = 0;
 
 	touchPosition tempPos = {0};
 	FifoMessage msg = {0};
 
-	u16 keys= REG_KEYXY;
+	u16 keys = REG_KEYXY;
 
-
-	if(!touchPenDown()) {
+	if (!touchPenDown())
 		keys |= KEY_TOUCH;
-  	} else {
+  	else
 		keys &= ~KEY_TOUCH;
-	}
 
 	msg.SystemInput.keys = keys;
 
-	if(keys & KEY_TOUCH) {
-		penDown = false;	
-	} else {
+	if (!(keys & KEY_TOUCH))
 		msg.SystemInput.keys |= KEY_TOUCH;
 
-		if(penDown) {
-			touchReadXY(&tempPos);	
-			
-			if(tempPos.rawx && tempPos.rawy) {
-				msg.SystemInput.keys &= ~KEY_TOUCH;
-				msg.SystemInput.touch = tempPos;
-			} else {
-				penDown = false;
-			}
-		} else {
-			penDown = true;
+		touchReadXY(&tempPos);	
+
+		if (tempPos.rawx && tempPos.rawy) {
+			msg.SystemInput.keys &= ~KEY_TOUCH;
+			msg.SystemInput.touch = tempPos;
 		}
 	}	
 
-	if(keys & KEY_LID) 
+	if (keys & KEY_LID) 
 		sleepCounter++;
 	else
 		sleepCounter = 0;
 
 	//sleep if lid has been closed for 20 frames
-	if(sleepCounter >= 20) 
-	{
+	if (sleepCounter >= 20)  {
 		systemSleep();
 		sleepCounter = 0;
 	}
