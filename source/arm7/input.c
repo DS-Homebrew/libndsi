@@ -22,23 +22,23 @@ void inputGetAndSend(void){
 
 	if (!touchPenDown())
 		keys |= KEY_TOUCH;
-  	else
+	else
 		keys &= ~KEY_TOUCH;
 
 	msg.SystemInput.keys = keys;
 
-	if (!(keys & KEY_TOUCH))
+	if (!(keys & KEY_TOUCH)) {
 		msg.SystemInput.keys |= KEY_TOUCH;
 
-		touchReadXY(&tempPos);	
+		touchReadXY(&tempPos);
 
 		if (tempPos.rawx && tempPos.rawy) {
 			msg.SystemInput.keys &= ~KEY_TOUCH;
 			msg.SystemInput.touch = tempPos;
 		}
-	}	
+	}
 
-	if (keys & KEY_LID) 
+	if (keys & KEY_LID)
 		sleepCounter++;
 	else
 		sleepCounter = 0;
