@@ -123,7 +123,7 @@ void dmaCopyWords(uint8 channel, const void* src, void* dest, uint32 size) {
 	DMA_SRC(channel) = (uint32)src;
 	DMA_DEST(channel) = (uint32)dest;
 	DMA_CR(channel) = DMA_COPY_WORDS | (size>>2);
-	while(DMA_CR(channel) & DMA_BUSY);
+	while (DMA_CR(channel) & DMA_BUSY);
 }
 
 static inline 
@@ -138,7 +138,7 @@ void dmaCopyHalfWords(uint8 channel, const void* src, void* dest, uint32 size) {
 	DMA_SRC(channel) = (uint32)src;
 	DMA_DEST(channel) = (uint32)dest;
 	DMA_CR(channel) = DMA_COPY_HALFWORDS | (size>>1);
-	while(DMA_CR(channel) & DMA_BUSY);
+	while (DMA_CR(channel) & DMA_BUSY);
 }
 
 static inline 
@@ -152,7 +152,7 @@ void dmaCopy(const void * source, void * dest, uint32 size) {
 	DMA_SRC(3) = (uint32)source;
 	DMA_DEST(3) = (uint32)dest;
 	DMA_CR(3) = DMA_COPY_HALFWORDS | (size>>1);
-	while(DMA_CR(3) & DMA_BUSY);
+	while (DMA_CR(3) & DMA_BUSY);
 }
 
 static inline 
@@ -219,7 +219,7 @@ void dmaFillWords(u32 value, void* dest, uint32 size) {
 
 	DMA_DEST(3) = (uint32)dest;
 	DMA_CR(3) = DMA_SRC_FIX | DMA_COPY_WORDS | (size>>2);
-	while(DMA_CR(3) & DMA_BUSY);
+	while (DMA_CR(3) & DMA_BUSY);
 }
 
 static inline 
@@ -241,7 +241,7 @@ void dmaFillHalfWords(u16 value, void* dest, uint32 size) {
 
 	DMA_DEST(3) = (uint32)dest;
 	DMA_CR(3) = DMA_SRC_FIX | DMA_COPY_HALFWORDS | (size>>1);
-	while(DMA_CR(3) & DMA_BUSY);
+	while (DMA_CR(3) & DMA_BUSY);
 }
 
 static inline 

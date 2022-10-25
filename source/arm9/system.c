@@ -51,23 +51,23 @@ void setSDcallback(void(*callback)(int)) {
 //---------------------------------------------------------------------------------
 // Handle system requests from the arm7
 //---------------------------------------------------------------------------------
-void systemValueHandler(u32 value, void* data){
+void systemValueHandler(u32 value, void* data) {
 //---------------------------------------------------------------------------------
-	switch(value) {
+	switch (value) {
 	case PM_REQ_SLEEP:
 		systemSleep();
 		break;
 	case SDMMC_INSERT:
-		if(SDcallback) SDcallback(1);
+		if (SDcallback) SDcallback(1);
 		break;
 	case SDMMC_REMOVE:
-		if(SDcallback) SDcallback(0);
+		if (SDcallback) SDcallback(0);
 		break;
 	}
 }
 
 //---------------------------------------------------------------------------------
-void systemMsgHandler(int bytes, void* user_data){
+void systemMsgHandler(int bytes, void* user_data) {
 //---------------------------------------------------------------------------------
 	FifoMessage msg;
 
@@ -93,7 +93,7 @@ void systemSleep(void) {
 //---------------------------------------------------------------------------------
 void powerOn(int bits) {
 //---------------------------------------------------------------------------------
-	if(bits & BIT(16))
+	if (bits & BIT(16))
 		REG_POWERCNT |= bits & 0xFFFF;
 	else
 		fifoSendValue32(FIFO_PM, PM_REQ_ON | (bits & 0xFFFF));
@@ -101,7 +101,7 @@ void powerOn(int bits) {
 
 //---------------------------------------------------------------------------------
 void powerOff(int bits) {
-	if(bits & BIT(16))
+	if (bits & BIT(16))
 		REG_POWERCNT &= ~(bits & 0xFFFF);
 	else
 		fifoSendValue32(FIFO_PM, PM_REQ_OFF | (bits & 0xFFFF));
@@ -117,7 +117,7 @@ void ledBlink(int bm) {
 u32 getBatteryLevel() {
 //---------------------------------------------------------------------------------
 	fifoSendValue32(FIFO_PM, PM_REQ_BATTERY);
-	while(!fifoCheckValue32(FIFO_PM)); //swiIntrWait(1,IRQ_FIFO_NOT_EMPTY);
+	while (!fifoCheckValue32(FIFO_PM)); //swiIntrWait(1,IRQ_FIFO_NOT_EMPTY);
 	return fifoGetValue32(FIFO_PM);
 }
 
@@ -125,7 +125,7 @@ u32 getBatteryLevel() {
 void enableSlot1() {
 //---------------------------------------------------------------------------------
 
-	if(isDSiMode()) fifoSendValue32(FIFO_PM, PM_REQ_SLOT1_ENABLE);
+	if (isDSiMode()) fifoSendValue32(FIFO_PM, PM_REQ_SLOT1_ENABLE);
 
 }
 
@@ -133,6 +133,6 @@ void enableSlot1() {
 void disableSlot1() {
 //---------------------------------------------------------------------------------
 
-	if(isDSiMode()) fifoSendValue32(FIFO_PM, PM_REQ_SLOT1_DISABLE);
+	if (isDSiMode()) fifoSendValue32(FIFO_PM, PM_REQ_SLOT1_DISABLE);
 
 }

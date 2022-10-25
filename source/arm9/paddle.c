@@ -22,18 +22,18 @@ static void paddleSetBus() {
 //------------------------------------------------------------------------------
 bool paddleIsInserted() {
 //------------------------------------------------------------------------------
-	if(isDSiMode()) return false;
+	if (isDSiMode()) return false;
 
 	paddleSetBus();
 
 	//This is 0x96h is a GBA game is inserted
-	if(GBA_HEADER.is96h == 0x96) return false;
+	if (GBA_HEADER.is96h == 0x96) return false;
 
 	//paddle signifies itself this way
-	if(*(vu16*)0x08000000 != 0xEFFF) return false;
+	if (*(vu16*)0x08000000 != 0xEFFF) return false;
 
 	//let's check one more way just to be safe
-	if(*(vu16*)0x0A000002 != 0x0000) return false;
+	if (*(vu16*)0x0A000002 != 0x0000) return false;
 
 	return true;
 }

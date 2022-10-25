@@ -58,7 +58,7 @@ u32 cardEepromReadID() {
 
 	eepromWaitBusy();
 	u32 id = 0;
-	for ( i=0; i<3; i++) {
+	for (i=0; i<3; i++) {
 		REG_AUXSPIDATA = 0;
 		eepromWaitBusy();
 		id = (id << 8) | REG_AUXSPIDATA;
@@ -77,9 +77,9 @@ int cardEepromGetType(void) {
 	int id = cardEepromReadID();
 	
 	if (( sr == 0xff && id == 0xffffff) || ( sr == 0 && id == 0 )) return -1;
-	if ( sr == 0xf0 && id == 0xffffff ) return 1;
-	if ( sr == 0x00 && id == 0xffffff ) return 2;
-	if ( id != 0xffffff || ( sr == 0x02 && id == 0xffffff )) return 3;
+	if (sr == 0xf0 && id == 0xffffff ) return 1;
+	if (sr == 0x00 && id == 0xffffff ) return 2;
+	if (id != 0xffffff || ( sr == 0x02 && id == 0xffffff )) return 3;
 	
 	return 0;
 }
@@ -90,13 +90,13 @@ uint32 cardEepromGetSize() {
 
 	int type = cardEepromGetType();
 
-	if(type == -1)
+	if (type == -1)
 		return 0;
-	if(type == 0)
+	if (type == 0)
 		return 8192;
-	if(type == 1)
+	if (type == 1)
 		return 512;
-	if(type == 2) {
+	if (type == 2) {
 		u32 buf1,buf2,buf3 = 0x54534554; // "TEST"
 		// Save the first word of the EEPROM
 		cardReadEeprom(0,(u8*)&buf1,4,type);
@@ -132,14 +132,14 @@ uint32 cardEepromGetSize() {
 
 	int device;
 
-	if(type == 3) {
+	if (type == 3) {
 		int id = cardEepromReadID();
 
 		device = id & 0xffff;
 		
-		if ( ((id >> 16) & 0xff) == 0x20 ) { // ST
+		if (((id >> 16) & 0xff) == 0x20) { // ST
 			
-			switch(device) {
+			switch (device) {
 
 			case 0x4014:
 				return 1024*1024;		//	8Mbit(1 meg)
@@ -154,16 +154,16 @@ uint32 cardEepromGetSize() {
 			}
 		}
 
-		if ( ((id >> 16) & 0xff) == 0x62 ) { // Sanyo
+		if (((id >> 16) & 0xff) == 0x62) { // Sanyo
 			
 			if (device == 0x1100)
 				return 512*1024;		//	4Mbit(512KByte)
 
 		}
 
-		if ( ((id >> 16) & 0xff) == 0xC2 ) { // Macronix
+		if (((id >> 16) & 0xff) == 0xC2) { // Macronix
 			
-			switch(device) {
+			switch (device) {
 
 			case 0x2211:
 				return 128*1024;		//	1Mbit(128KByte) - MX25L1021E
@@ -230,9 +230,9 @@ void cardWriteEeprom(uint32 address, uint8 *data, uint32 length, uint32 addrtype
 	uint32 address_end = address + length;
 	int i;
 	int maxblocks = 32;
-	if(addrtype == 1) maxblocks = 16;
-	if(addrtype == 2) maxblocks = 32;
-	if(addrtype == 3) maxblocks = 256;
+	if (addrtype == 1) maxblocks = 16;
+	if (addrtype == 2) maxblocks = 32;
+	if (addrtype == 3) maxblocks = 256;
 
 	while (address < address_end) {
 		// set WEL (Write Enable Latch)
@@ -243,14 +243,14 @@ void cardWriteEeprom(uint32 address, uint8 *data, uint32 length, uint32 addrtype
 		// program maximum of 32 bytes
 		REG_AUXSPICNT = /*E*/0x8000 | /*SEL*/0x2000 | /*MODE*/0x40;
 
-		if(addrtype == 1) {
+		if (addrtype == 1) {
 		//	WRITE COMMAND 0x02 + A8 << 3
 			REG_AUXSPIDATA = 0x02 | (address & BIT(8)) >> (8-3) ;
 			eepromWaitBusy();
 			REG_AUXSPIDATA = address & 0xFF;
 			eepromWaitBusy();
 		}
-		else if(addrtype == 2) {
+		else if (addrtype == 2) {
 			REG_AUXSPIDATA = 0x02;
 			eepromWaitBusy();
 			REG_AUXSPIDATA = address >> 8;
@@ -258,7 +258,7 @@ void cardWriteEeprom(uint32 address, uint8 *data, uint32 length, uint32 addrtype
 			REG_AUXSPIDATA = address & 0xFF;
 			eepromWaitBusy();
 		}
-		else if(addrtype == 3) {
+		else if (addrtype == 3) {
 			REG_AUXSPIDATA = 0x02;
 			eepromWaitBusy();
 			REG_AUXSPIDATA = (address >> 16) & 0xFF;
@@ -292,7 +292,7 @@ void cardEepromChipErase(void) {
 	int sz, sector;
 	sz=cardEepromGetSize();
 
-	for ( sector = 0; sector < sz; sector+=0x10000) {
+	for (sector = 0; sector < sz; sector+=0x10000) {
 		cardEepromSectorErase(sector);
 	}
 }

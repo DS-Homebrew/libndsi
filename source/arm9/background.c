@@ -92,13 +92,13 @@ bool bgIsText(int id) {
 }
 
 bool checkIfText(int id) {
-	if(id < 2 || (id > 3 && id < 6)) return true;
+	if (id < 2 || (id > 3 && id < 6)) return true;
 
 	u8 mode = (id < 4) ? (videoGetMode() & 7) : (videoGetModeSub() & 7);
 
-	if(!mode) return true;
+	if (!mode) return true;
 
-	if(mode == 1 || mode == 3) {
+	if (mode == 1 || mode == 3) {
 		return id == 3 || id == 7 ? false : true;
 	}
 
@@ -109,19 +109,17 @@ void bgUpdate(void) {
 
 	int i = 0;
 
-	for(i = 0; i < 8; i++)
+	for (i = 0; i < 8; i++)
 	{
-		if(!bgState[i].dirty) continue;
+		if (!bgState[i].dirty) continue;
 
-		if(bgIsTextLut[i])
+		if (bgIsTextLut[i])
 		{
 
 			bgScrollTable[i]->x = bgState[i].scrollX >> 8;
 			bgScrollTable[i]->y = bgState[i].scrollY >> 8;
 
-		}
-		else
-		{
+		} else {
 			s16 angleSin;
 			s16 angleCos;
 
@@ -163,7 +161,7 @@ int bgInit_call(int layer, BgType type, BgSize size, int mapBase, int tileBase) 
 
 	bgIsTextLut[layer] = checkIfText(layer);
 
-	if(type != BgType_Text8bpp && type != BgType_Text4bpp) {
+	if (type != BgType_Text8bpp && type != BgType_Text4bpp) {
 		bgSetScale(layer, 1 << 8, 1 << 8);
 		bgSetRotate(layer, 0);
 	}
@@ -190,7 +188,7 @@ int bgInitSub_call(int layer, BgType type, BgSize size, int mapBase, int tileBas
 
 	bgIsTextLut[layer + 4] = checkIfText(layer + 4);
 
-	if(type != BgType_Text8bpp && type != BgType_Text4bpp) {
+	if (type != BgType_Text8bpp && type != BgType_Text4bpp) {
 		bgSetScale(layer + 4, 1 << 8, 1 << 8);
 		bgSetRotate(layer + 4, 0);
 	}

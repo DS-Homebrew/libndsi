@@ -16,15 +16,15 @@ static void guitarGripSetBus() {
 //------------------------------------------------------------------------------
 bool guitarGripIsInserted() {
 //------------------------------------------------------------------------------
-	if(isDSiMode()) return false;
+	if (isDSiMode()) return false;
 
 	guitarGripSetBus();
 
 	//This is 0x96h is a GBA game is inserted
-	if(GBA_HEADER.is96h == 0x96) return false;
+	if (GBA_HEADER.is96h == 0x96) return false;
 
 	//guitar grip signifies itself this way
-	if(*(vu16*)0x08000000 != 0xF9FF) return false;
+	if (*(vu16*)0x08000000 != 0xF9FF) return false;
 
 	return true;
 }

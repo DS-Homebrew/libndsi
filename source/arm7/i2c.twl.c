@@ -39,7 +39,7 @@ void i2cDelay() {
 //---------------------------------------------------------------------------------
 void i2cStop(u8 arg0) {
 //---------------------------------------------------------------------------------
-	if(i2cCurrentDelay) {
+	if (i2cCurrentDelay) {
 		REG_I2CCNT = (arg0 << 5) | 0xC0;
 		i2cDelay();
 		REG_I2CCNT = 0xC5;
@@ -64,7 +64,7 @@ u8 i2cGetData() {
 //---------------------------------------------------------------------------------
 void i2cSetDelay(u8 device) {
 //---------------------------------------------------------------------------------
-	if (device == I2C_PM ) {
+	if (device == I2C_PM) {
 		i2cCurrentDelay = 0x180;
 	} else {
 		i2cCurrentDelay = 0;
@@ -95,12 +95,12 @@ u8 i2cWriteRegister(u8 device, u8 reg, u8 data) {
 	i2cSetDelay(device);
 	int i;
 
-	for(i = 0; i < 8; i++) {
-		if((i2cSelectDevice(device) != 0) && (i2cSelectRegister(reg) != 0)) {
+	for (i = 0; i < 8; i++) {
+		if ((i2cSelectDevice(device) != 0) && (i2cSelectRegister(reg) != 0)) {
 			i2cDelay();
 			REG_I2CDATA = data;
 			i2cStop(0);
-			if(i2cGetResult() != 0) return 1;
+			if (i2cGetResult() != 0) return 1;
         }
 		REG_I2CCNT = 0xC5;
     }
@@ -114,11 +114,11 @@ u8 i2cReadRegister(u8 device, u8 reg) {
 	i2cSetDelay(device);
 	int i;
 
-	for(i = 0; i < 8; i++) {
+	for (i = 0; i < 8; i++) {
 		
-		if((i2cSelectDevice(device) != 0) && (i2cSelectRegister(reg) != 0)) {
+		if ((i2cSelectDevice(device) != 0) && (i2cSelectRegister(reg) != 0)) {
 			i2cDelay();
-			if(i2cSelectDevice(device | 1)) {
+			if (i2cSelectDevice(device | 1)) {
 				i2cDelay();
 				i2cStop(1);
 				return i2cGetData();

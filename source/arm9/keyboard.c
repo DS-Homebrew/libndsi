@@ -140,7 +140,7 @@ Keyboard *curKeyboard = &defaultKeyboard;
 
 int keyboardGetKey(int x, int y) {
 	//todo: check lower bounds as well
-	if(x < curKeyboard->offset_x || y + curKeyboard->offset_y < 0)
+	if (x < curKeyboard->offset_x || y + curKeyboard->offset_y < 0)
 		return NOKEY;
 
 	lastKey = curKeyboard->mappings[curKeyboard->state]->keymap[((x - curKeyboard->offset_x) / curKeyboard->grid_width) + ((y + curKeyboard->offset_y) / curKeyboard->grid_height) * 32];
@@ -158,7 +158,7 @@ void keyboardShiftState(void) {
 }
 
 void swapKeyGfx(int key, bool pressed) {
-	if(key == NOKEY) return;
+	if (key == NOKEY) return;
 
 	KeyMap * keymap = curKeyboard->mappings[curKeyboard->state];
 
@@ -171,13 +171,13 @@ void swapKeyGfx(int key, bool pressed) {
 	int gw = curKeyboard->grid_width >> 3;
 	int gh = curKeyboard->grid_height >> 3;
 
-	for(gy = 0; gy < keymap->height; gy++)
-	for(gx = 0; gx < keymap->width; gx++) {
-		if(keymap->keymap[gx + gy * keymap->width] == key) {
+	for (gy = 0; gy < keymap->height; gy++)
+	for (gx = 0; gx < keymap->width; gx++) {
+		if (keymap->keymap[gx + gy * keymap->width] == key) {
 			int tx, ty;
 
-			for(ty = 0; ty < gh; ty++)
-				for(tx = 0; tx < gw; tx++) {
+			for (ty = 0; ty < gh; ty++)
+				for (tx = 0; tx < gw; tx++) {
 					int ox = tx + gx * gw;
 					int oy = (ty + gy * gh) * 32;
 
@@ -199,60 +199,60 @@ int keyboardUpdate(void) {
 	keys &= ~oldKeys;
 	oldKeys = temp;
 
-	if(pressed) {
-		if(!(keysCurrent() & KEY_TOUCH)) {
+	if (pressed) {
+		if (!(keysCurrent() & KEY_TOUCH)) {
 			pressed = 0;
 
-			if(lastKey != NOKEY) swapKeyGfx(lastKey, false);
+			if (lastKey != NOKEY) swapKeyGfx(lastKey, false);
 
-			if(lastKey == DVK_CAPS) {
+			if (lastKey == DVK_CAPS) {
 				keyboardShiftState();
 				return -1;
-			} else if(lastKey == DVK_SHIFT) {
+			} else if (lastKey == DVK_SHIFT) {
 				keyboardShiftState();
 				curKeyboard->shifted = curKeyboard->shifted ? 0 : 1;
 				return -1;
 			}
 
-			if(curKeyboard->shifted) {
+			if (curKeyboard->shifted) {
 				keyboardShiftState();
 				curKeyboard->shifted = 0;
 			}
-			if(curKeyboard->OnKeyReleased) curKeyboard->OnKeyReleased(lastKey);
+			if (curKeyboard->OnKeyReleased) curKeyboard->OnKeyReleased(lastKey);
 		}
 
 		return -1;
 	} else {
-		if(keys & KEY_TOUCH) {
+		if (keys & KEY_TOUCH) {
 			touchRead(&touch);
 
 			int key = keyboardGetKey(touch.px, touch.py);
 
-			if(key == NOKEY) return -1;
+			if (key == NOKEY) return -1;
 
 			pressed = 1;
 
 			swapKeyGfx(key, true);
 
-			if(key == DVK_BACKSPACE) {
+			if (key == DVK_BACKSPACE) {
 
-				if(keyBufferLength > 0) {
+				if (keyBufferLength > 0) {
 					keyBufferLength--;
 					keyBufferOffset--;
 
-					if(keyBufferOffset < 0) keyBufferOffset = KEY_BUFFER_SIZE - 1;
-				} else if(stdioRead) {
+					if (keyBufferOffset < 0) keyBufferOffset = KEY_BUFFER_SIZE - 1;
+				} else if (stdioRead) {
 					return -1;
 				}
-			} else if(key >= 0) {
+			} else if (key >= 0) {
 				keyBuffer[keyBufferOffset++] = (char)key;
 
-				if(keyBufferLength < KEY_BUFFER_SIZE) keyBufferLength++;
+				if (keyBufferLength < KEY_BUFFER_SIZE) keyBufferLength++;
 
-				if(keyBufferOffset >= KEY_BUFFER_SIZE) keyBufferOffset = 0;
+				if (keyBufferOffset >= KEY_BUFFER_SIZE) keyBufferOffset = 0;
 			}
 
-			if(curKeyboard->OnKeyPressed) curKeyboard->OnKeyPressed(lastKey);
+			if (curKeyboard->OnKeyPressed) curKeyboard->OnKeyPressed(lastKey);
 
 			return lastKey;
 		}
@@ -271,7 +271,7 @@ ssize_t keyboardRead(struct _reent *r, void *unused, char *ptr, size_t len) {
 
 	stdioRead = true;
 
-	if(!curKeyboard->visible) {
+	if (!curKeyboard->visible) {
 		wasHidden = 1;
 		keyboardShow();
 	}
@@ -280,11 +280,11 @@ ssize_t keyboardRead(struct _reent *r, void *unused, char *ptr, size_t len) {
 		keyboardUpdate();
 		swiWaitForVBlank();
 
-	} while(keyBufferLength <= 0 || (keyBufferLength < KEY_BUFFER_SIZE && lastKey != DVK_ENTER));
+	} while (keyBufferLength <= 0 || (keyBufferLength < KEY_BUFFER_SIZE && lastKey != DVK_ENTER));
 
 	tempLen = keyBufferLength;
 
-	while(len > 0 && keyBufferLength > 0) {
+	while (len > 0 && keyBufferLength > 0) {
 		c = keyBuffer[(keyBufferOffset - keyBufferLength) % 256];
 
 		*ptr++ = c;
@@ -293,7 +293,7 @@ ssize_t keyboardRead(struct _reent *r, void *unused, char *ptr, size_t len) {
 		len--;
 	}
 
-	if(wasHidden) {
+	if (wasHidden) {
 		keyboardHide();
 	}
 
@@ -324,7 +324,7 @@ Keyboard* keyboardGetDefault(void) {
 
 
 Keyboard* keyboardInit(Keyboard* keyboard, int layer, BgType type, BgSize size, int mapBase, int tileBase, bool mainDisplay, bool loadGraphics) {
-	if(keyboard) {
+	if (keyboard) {
 		curKeyboard = keyboard;
 	} else {
 		keyboard = curKeyboard;
@@ -334,7 +334,7 @@ Keyboard* keyboardInit(Keyboard* keyboard, int layer, BgType type, BgSize size, 
 
 	keyboard->keyboardOnSub = !mainDisplay;
 
-	if(keyboard->keyboardOnSub)
+	if (keyboard->keyboardOnSub)
 		keyboard->background = bgInitSub(layer, type, size, mapBase, tileBase);
 	else
 		keyboard->background = bgInit(layer, type, size, mapBase, tileBase);
@@ -346,7 +346,7 @@ Keyboard* keyboardInit(Keyboard* keyboard, int layer, BgType type, BgSize size, 
 
 	KeyMap* map = keyboard->mappings[keyboard->state];
 
-	if(loadGraphics) {
+	if (loadGraphics) {
 		u16* pal = keyboard->keyboardOnSub ? BG_PALETTE_SUB : BG_PALETTE;
 
 		decompress(keyboard->tiles, bgGetGfxPtr(keyboard->background),  LZ77Vram);
@@ -387,9 +387,9 @@ void keyboardShow(void) {
 
 	bgShow(curKeyboard->background);
 
-	if(curKeyboard->scrollSpeed)
+	if (curKeyboard->scrollSpeed)
 	{
-		for(i = -192; i < curKeyboard->offset_y; i += curKeyboard->scrollSpeed)
+		for (i = -192; i < curKeyboard->offset_y; i += curKeyboard->scrollSpeed)
 		{
 			swiWaitForVBlank();
 			bgSetScroll(curKeyboard->background, 0, i);
@@ -406,9 +406,9 @@ void keyboardHide(void) {
 
 	curKeyboard->visible = 0;
 
-	if(curKeyboard->scrollSpeed)
+	if (curKeyboard->scrollSpeed)
 	{
-		for(i = curKeyboard->offset_y; i > -192; i-= curKeyboard->scrollSpeed)
+		for (i = curKeyboard->offset_y; i > -192; i-= curKeyboard->scrollSpeed)
 		{
 			swiWaitForVBlank();
 			bgSetScroll(curKeyboard->background, 0, i);
@@ -423,18 +423,18 @@ int keyboardGetChar(void) {
 	int pressed;
 
 
-	while(1) {
+	while (1) {
 		swiWaitForVBlank();
 		scanKeys();
 		pressed = keysDown();
 
-		if(pressed & KEY_TOUCH) {
+		if (pressed & KEY_TOUCH) {
 			touchPosition touch;
 			touchRead(&touch);
 
 			int key = keyboardGetKey(touch.px, touch.py);
 
-			if(key != NOKEY)
+			if (key != NOKEY)
 				return key;
 		}
 	}
@@ -446,10 +446,10 @@ void keyboardGetString(char * buffer, int maxLen) {
 	char *end = buffer + maxLen;
 	char c;
 
-	while(buffer < end) {
+	while (buffer < end) {
 		c = (char)keyboardGetChar();
 
-		if(c == DVK_ENTER) break;
+		if (c == DVK_ENTER) break;
 
 		*buffer++ = c;
 	}

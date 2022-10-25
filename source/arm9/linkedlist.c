@@ -8,7 +8,7 @@ LinkedList* linkedlistAdd(LinkedList **front, void* data)
 {
 	LinkedList *node = (LinkedList*)malloc(sizeof(LinkedList));
 
-	if(node == NULL)
+	if (node == NULL)
 	{
 		return NULL;
 	}
@@ -16,14 +16,12 @@ LinkedList* linkedlistAdd(LinkedList **front, void* data)
 	node->prev = NULL;
 	node->data = data;
 
-	if(*front == NULL)
+	if (*front == NULL)
 	{
 		node->next = NULL;
 
 		*front = node;
-	}
-	else
-	{
+	} else {
 		node->next = *front;
 
 		(*front)->prev = node;
@@ -36,17 +34,17 @@ LinkedList* linkedlistAdd(LinkedList **front, void* data)
 
 void linkedlistRemove(LinkedList *node)
 {
-	if(node == NULL)
+	if (node == NULL)
 	{
 		return;
 	}
 
-	if(node->prev != NULL)
+	if (node->prev != NULL)
 	{
 		node->prev->next = node->next;
 	}
 
-	if(node->next != NULL)
+	if (node->next != NULL)
 	{
 		node->next->prev = node->prev;
 	}

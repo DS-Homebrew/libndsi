@@ -32,13 +32,13 @@
 #include <string.h>
 
 
-void soundEnable(void){
+void soundEnable(void) {
 	fifoSendValue32(FIFO_SOUND, SOUND_MASTER_ENABLE);
 }
-void soundDisable(void){
+void soundDisable(void) {
 	fifoSendValue32(FIFO_SOUND, SOUND_MASTER_DISABLE);
 }
-int soundPlayPSG(DutyCycle cycle, u16 freq, u8 volume, u8 pan){
+int soundPlayPSG(DutyCycle cycle, u16 freq, u8 volume, u8 pan) {
 	FifoMessage msg;
 
 	msg.type = SOUND_PSG_MESSAGE;
@@ -49,11 +49,11 @@ int soundPlayPSG(DutyCycle cycle, u16 freq, u8 volume, u8 pan){
 
 	fifoSendDatamsg(FIFO_SOUND, sizeof(msg), (u8*)&msg);
 
-	while(!fifoCheckValue32(FIFO_SOUND));
+	while (!fifoCheckValue32(FIFO_SOUND));
 
 	return (int)fifoGetValue32(FIFO_SOUND);
 }
-int soundPlayNoise(u16 freq, u8 volume, u8 pan){
+int soundPlayNoise(u16 freq, u8 volume, u8 pan) {
 	FifoMessage msg;
 
 	msg.type = SOUND_NOISE_MESSAGE;
@@ -63,12 +63,12 @@ int soundPlayNoise(u16 freq, u8 volume, u8 pan){
 
 	fifoSendDatamsg(FIFO_SOUND, sizeof(msg), (u8*)&msg);
 
-	while(!fifoCheckValue32(FIFO_SOUND));
+	while (!fifoCheckValue32(FIFO_SOUND));
 
 	return (int)fifoGetValue32(FIFO_SOUND);
 }
 
-int soundPlaySample(const void* data, SoundFormat format, u32 dataSize, u16 freq, u8 volume, u8 pan, bool loop, u16 loopPoint){ 
+int soundPlaySample(const void* data, SoundFormat format, u32 dataSize, u16 freq, u8 volume, u8 pan, bool loop, u16 loopPoint) { 
 	
 	FifoMessage msg;
 
@@ -84,54 +84,54 @@ int soundPlaySample(const void* data, SoundFormat format, u32 dataSize, u16 freq
 
 	fifoSendDatamsg(FIFO_SOUND, sizeof(msg), (u8*)&msg);
 
-	while(!fifoCheckValue32(FIFO_SOUND));
+	while (!fifoCheckValue32(FIFO_SOUND));
 
 	return (int)fifoGetValue32(FIFO_SOUND);
 }
 
-void soundPause(int soundId){
+void soundPause(int soundId) {
 	fifoSendValue32(FIFO_SOUND, SOUND_PAUSE | (soundId << 16));
 }
 
-void soundKill(int soundId){
+void soundKill(int soundId) {
 	fifoSendValue32(FIFO_SOUND, SOUND_KILL | (soundId << 16));
 }
 
-void soundResume(int soundId){
+void soundResume(int soundId) {
 	fifoSendValue32(FIFO_SOUND, SOUND_RESUME | (soundId << 16));
 }
 
-void soundSetVolume(int soundId, u8 volume){
+void soundSetVolume(int soundId, u8 volume) {
 	fifoSendValue32(FIFO_SOUND, SOUND_SET_VOLUME | (soundId << 16) | volume);
 }
 
-void soundSetPan(int soundId, u8 pan){
+void soundSetPan(int soundId, u8 pan) {
 	fifoSendValue32(FIFO_SOUND, SOUND_SET_PAN | (soundId << 16) | pan);
 }
 
-void soundSetFreq(int soundId, u16 freq){
+void soundSetFreq(int soundId, u16 freq) {
 	fifoSendValue32(FIFO_SOUND, SOUND_SET_FREQ | (soundId << 16) | freq);
 }
 
-void soundSetWaveDuty(int soundId, DutyCycle cycle){
+void soundSetWaveDuty(int soundId, DutyCycle cycle) {
 	fifoSendValue32(FIFO_SOUND, SOUND_SET_WAVEDUTY | (soundId << 16) | cycle);
 }
 
 MicCallback micCallback = 0;
 
-void micBufferHandler(int bytes, void* user_data){
+void micBufferHandler(int bytes, void* user_data) {
 	FifoMessage msg;
 
 	fifoGetDatamsg(FIFO_SOUND, bytes, (u8*)&msg);
 	
-	if(msg.type == MIC_BUFFER_FULL_MESSAGE) {
+	if (msg.type == MIC_BUFFER_FULL_MESSAGE) {
 
-		if(micCallback) micCallback(msg.MicBufferFull.buffer, msg.MicBufferFull.length);
+		if (micCallback) micCallback(msg.MicBufferFull.buffer, msg.MicBufferFull.length);
 	}
 }
 
 
-int soundMicRecord(void *buffer, u32 bufferLength, MicFormat format, int freq, MicCallback callback){
+int soundMicRecord(void *buffer, u32 bufferLength, MicFormat format, int freq, MicCallback callback) {
 	FifoMessage msg;
 
 	msg.type = MIC_RECORD_MESSAGE;
@@ -146,10 +146,10 @@ int soundMicRecord(void *buffer, u32 bufferLength, MicFormat format, int freq, M
 
 	fifoSendDatamsg(FIFO_SOUND, sizeof(msg), (u8*)&msg);
 
-	while(!fifoCheckValue32(FIFO_SOUND));
+	while (!fifoCheckValue32(FIFO_SOUND));
 
 	return (int)fifoGetValue32(FIFO_SOUND);
 }
-void soundMicOff(void){
+void soundMicOff(void) {
 	fifoSendValue32(FIFO_SOUND, MIC_STOP);
 }

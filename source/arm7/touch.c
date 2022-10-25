@@ -43,7 +43,7 @@ static u8 range = 20;
 static u8 min_range = 20;
 
 //---------------------------------------------------------------------------------
-static u8 CheckStylus(){
+static u8 CheckStylus() {
 //---------------------------------------------------------------------------------
 
 	SerialWaitBusy();
@@ -62,8 +62,8 @@ static u8 CheckStylus(){
 
 	SerialWaitBusy();
 
-	if(last_time_touched == 1){
-		if( !(REG_KEYXY & 0x40) )
+	if (last_time_touched == 1) {
+		if (!(REG_KEYXY & 0x40) )
 			return 1;
 		else{
 			REG_SPICNT = SPI_ENABLE | SPI_BAUD_2MHz | SPI_DEVICE_TOUCH | SPI_CONTINUOUS;
@@ -82,7 +82,7 @@ static u8 CheckStylus(){
 
 			return !(REG_KEYXY & 0x40) ? 2 : 0;
 		}
-	}else{
+	} else {
 		return !(REG_KEYXY & 0x40) ? 1 : 0;
 	}
 }
@@ -131,7 +131,7 @@ uint32 touchReadTemperature(int * t1, int * t2) {
 }
 
 //---------------------------------------------------------------------------------
-int16 readTouchValue(uint32 command, int16 *dist_max, u8 *err){
+int16 readTouchValue(uint32 command, int16 *dist_max, u8 *err) {
 //---------------------------------------------------------------------------------
 	int16 values[5];
 	int32 aux1, aux2, aux3, dist, dist2, result = 0;
@@ -146,7 +146,7 @@ int16 readTouchValue(uint32 command, int16 *dist_max, u8 *err){
 
 	SerialWaitBusy();
 
-	for(i=0; i<5; i++){
+	for (i=0; i<5; i++) {
 		REG_SPIDATA = 0;
 		SerialWaitBusy();
 
@@ -173,31 +173,31 @@ int16 readTouchValue(uint32 command, int16 *dist_max, u8 *err){
 	SerialWaitBusy();
 
 	dist = 0;
-	for(i=0; i<4; i++){
+	for (i=0; i<4; i++) {
 		aux1 = values[i];
 
-		for(j=i+1; j<5; j++){
+		for (j=i+1; j<5; j++) {
 			aux2 = values[j];
 			aux2 = abs(aux1 - aux2);
-			if(aux2>dist) dist = aux2;
+			if (aux2>dist) dist = aux2;
 		}
 	}
 
 	*dist_max = dist;
 
-	for(i=0; i<3; i++){
+	for (i=0; i<3; i++) {
 		aux1 = values[i];
 
-		for(j=i+1; j<4; j++){
+		for (j=i+1; j<4; j++) {
 			aux2 = values[j];
 			dist = abs(aux1 - aux2);
 
-			if( dist <= range ){
-				for(k=j+1; k<5; k++){
+			if (dist <= range) {
+				for (k=j+1; k<5; k++) {
 					aux3 = values[k];
 					dist2 = abs(aux1 - aux3);
 
-					if( dist2 <= range ){
+					if (dist2 <= range) {
 						result = aux2 + (aux1 << 1);
 						result = result + aux3;
 						result = result >> 2;
@@ -212,7 +212,7 @@ int16 readTouchValue(uint32 command, int16 *dist_max, u8 *err){
 		}
 	}
 
-	if((*err) == 1){
+	if ((*err) == 1) {
 		result = values[0] + values[4];
 		result = result >> 1;
 		result = result & (~7);
@@ -222,7 +222,7 @@ int16 readTouchValue(uint32 command, int16 *dist_max, u8 *err){
 }
 
 //---------------------------------------------------------------------------------
-void UpdateRange(uint8 *this_range, int16 last_dist_max, u8 data_error, u8 tsc_touched){
+void UpdateRange(uint8 *this_range, int16 last_dist_max, u8 data_error, u8 tsc_touched) {
 //---------------------------------------------------------------------------------
 	//range_counter_1 = counter_0x380A98C
 	//range_counter_2 = counter_0x380A990
@@ -230,38 +230,38 @@ void UpdateRange(uint8 *this_range, int16 last_dist_max, u8 data_error, u8 tsc_t
 	// range = 20
 	// min_range = 20
 
-	if(tsc_touched != 0){
-		if( data_error == 0){
+	if (tsc_touched != 0) {
+		if (data_error == 0) {
 			range_counter_2 = 0;
 
-			if( last_dist_max >= ((*this_range) >> 1)){
+			if (last_dist_max >= ((*this_range) >> 1)) {
 				range_counter_1 = 0;
-			}else{
+			} else {
 				range_counter_1++;
 
-				if(range_counter_1 >= 4){
+				if (range_counter_1 >= 4) {
 					range_counter_1 = 0;
 
-					if((*this_range) > min_range){
+					if ((*this_range) > min_range) {
 						(*this_range)--;
 						range_counter_2 = 3;
 					}
 				}
 			}
-		}else{
+		} else {
 			range_counter_1 = 0;
 			range_counter_2++;
 
-			if(range_counter_2 >= 4){
+			if (range_counter_2 >= 4) {
 
 				range_counter_2 = 0;
 
-				if((*this_range) < 35){  //0x23 = 35
+				if ((*this_range) < 35) {  //0x23 = 35
 					*this_range = (*this_range) + 1;
 				}
 			}
 		}
-	}else{
+	} else {
 		range_counter_2 = 0;
 		range_counter_1 = 0;
 	}
@@ -275,20 +275,20 @@ static void touchReadDSMode(touchPosition *touchPos) {
 	u8 error, error_where, first_check, i;
 
 	first_check = CheckStylus();
-	if(first_check != 0){
+	if (first_check != 0) {
 		error_where = 0;
 
 		touchPos->z1 =  readTouchValue(TSC_MEASURE_Z1 | 1, &dist_max, &error);
 		touchPos->z2 =  readTouchValue(TSC_MEASURE_Z2 | 1, &dist_max, &error);
 
 		touchPos->rawx = readTouchValue(TSC_MEASURE_X | 1, &dist_max_x, &error);
-		if(error==1) error_where += 1;
+		if (error==1) error_where += 1;
 
 		touchPos->rawy = readTouchValue(TSC_MEASURE_Y | 1, &dist_max_y, &error);
-		if(error==1) error_where += 2;
+		if (error==1) error_where += 2;
 
 		REG_SPICNT = SPI_ENABLE | SPI_BAUD_2MHz | SPI_DEVICE_TOUCH | SPI_CONTINUOUS;
-		for(i=0; i<12; i++){
+		for (i=0; i<12; i++) {
 			REG_SPIDATA = 0;
 
 			SerialWaitBusy();
@@ -299,16 +299,16 @@ static void touchReadDSMode(touchPosition *touchPos) {
 
 		SerialWaitBusy();
 
-		if(first_check == 2) error_where = 3;
+		if (first_check == 2) error_where = 3;
 
-		switch( CheckStylus() ){
+		switch ( CheckStylus()) {
 		case 0:
 			last_time_touched = 0;
 			break;
 		case 1:
 			last_time_touched = 1;
 
-			if(dist_max_x > dist_max_y)
+			if (dist_max_x > dist_max_y)
 				dist_max = dist_max_x;
 			else
 				dist_max = dist_max_y;
@@ -321,7 +321,7 @@ static void touchReadDSMode(touchPosition *touchPos) {
 			break;
 		}
 
-	}else{
+	} else {
 		error_where = 3;
 		touchPos->rawx = 0;
 		touchPos->rawy = 0;
@@ -383,10 +383,10 @@ void touchReadXY(touchPosition *touchPos) {
 	s16 px = ( touchPos->rawx * xscale - xoffset + xscale/2 ) >>19;
 	s16 py = ( touchPos->rawy * yscale - yoffset + yscale/2 ) >>19;
 
-	if ( px < 0) px = 0;
-	if ( py < 0) py = 0;
-	if ( px > (SCREEN_WIDTH -1)) px = SCREEN_WIDTH -1;
-	if ( py > (SCREEN_HEIGHT -1)) py = SCREEN_HEIGHT -1;
+	if (px < 0) px = 0;
+	if (py < 0) py = 0;
+	if (px > (SCREEN_WIDTH -1)) px = SCREEN_WIDTH -1;
+	if (py > (SCREEN_HEIGHT -1)) py = SCREEN_HEIGHT -1;
 
 	touchPos->px = px;
 	touchPos->py = py;

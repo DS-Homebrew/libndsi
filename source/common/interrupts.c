@@ -79,7 +79,7 @@ VoidFn setPowerButtonCB(VoidFn CB) {
 #endif
 
 //---------------------------------------------------------------------------------
-static void __irqSet(u32 mask, IntFn handler, struct IntTable irqTable[] ) {
+static void __irqSet(u32 mask, IntFn handler, struct IntTable irqTable[]) {
 //---------------------------------------------------------------------------------
 	if (!mask) return;
 
@@ -88,7 +88,7 @@ static void __irqSet(u32 mask, IntFn handler, struct IntTable irqTable[] ) {
 	for	(i=0;i<MAX_INTERRUPTS;i++)
 		if	(!irqTable[i].mask || irqTable[i].mask == mask) break;
 
-	if ( i == MAX_INTERRUPTS ) return;
+	if (i == MAX_INTERRUPTS ) return;
 
 	irqTable[i].handler	= handler;
 	irqTable[i].mask	= mask;
@@ -99,11 +99,11 @@ void irqSet(u32 mask, IntFn handler) {
 //---------------------------------------------------------------------------------
 	int oldIME = enterCriticalSection();
 	__irqSet(mask,handler,irqTable);
-	if(mask & IRQ_VBLANK)
+	if (mask & IRQ_VBLANK)
 		REG_DISPSTAT |= DISP_VBLANK_IRQ ;
-	if(mask & IRQ_HBLANK)
+	if (mask & IRQ_HBLANK)
 		REG_DISPSTAT |= DISP_HBLANK_IRQ ;
-	if(mask & IRQ_IPC_SYNC)
+	if (mask & IRQ_IPC_SYNC)
 		REG_IPC_SYNC |= IPC_SYNC_IRQ_ENABLE;
 	leaveCriticalSection(oldIME);
 }
@@ -132,7 +132,7 @@ void irqInit() {
 	irqInitHandler(IntrMain);
 
 	// Set all interrupts to dummy functions.
-	for(i = 0; i < MAX_INTERRUPTS; i ++)
+	for (i = 0; i < MAX_INTERRUPTS; i ++)
 	{
 		irqTable[i].handler = irqDummy;
 		irqTable[i].mask = 0;
@@ -158,7 +158,7 @@ void irqEnable(uint32 irq) {
 		REG_DISPSTAT |= DISP_HBLANK_IRQ ;
 	if (irq & IRQ_VCOUNT)
 		REG_DISPSTAT |= DISP_YTRIGGER_IRQ;
-	if(irq & IRQ_IPC_SYNC)
+	if (irq & IRQ_IPC_SYNC)
 		REG_IPC_SYNC |= IPC_SYNC_IRQ_ENABLE;
 
 	REG_IE |= irq;
@@ -175,7 +175,7 @@ void irqDisable(uint32 irq) {
 		REG_DISPSTAT &= ~DISP_HBLANK_IRQ ;
 	if (irq & IRQ_VCOUNT)
 		REG_DISPSTAT &= ~DISP_YTRIGGER_IRQ;
-	if(irq & IRQ_IPC_SYNC)
+	if (irq & IRQ_IPC_SYNC)
 		REG_IPC_SYNC &= ~IPC_SYNC_IRQ_ENABLE;
 
 	REG_IE &= ~irq;
@@ -190,7 +190,7 @@ static void __irqClear(u32 mask, struct IntTable irqTable[]) {
 	for	(i=0;i<MAX_INTERRUPTS;i++)
 		if	(irqTable[i].mask == mask) break;
 
-	if ( i == MAX_INTERRUPTS ) return;
+	if (i == MAX_INTERRUPTS ) return;
 
 	irqTable[i].handler	= irqDummy;
 }

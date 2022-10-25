@@ -374,7 +374,7 @@ static inline
 *    \param dx (0-15) horizontal mosaic value
 *    \param dy (0-15) horizontal mosaic value
 */
-void oamSetMosaicSub(unsigned int dx, unsigned int dy){
+void oamSetMosaicSub(unsigned int dx, unsigned int dy) {
 	sassert(dx < 16 && dy < 16, "Mosaic range must be 0 to 15");
 
 	mosaicShadowSub = ( mosaicShadowSub & 0x00ff) | (dx << 8)| (dy << 12);
@@ -483,7 +483,7 @@ void oamSetGfx(OamState* oam, int id, SpriteSize size, SpriteColorFormat format,
     oam->oamMemory[id].size     = (ObjSize)SPRITE_SIZE_SIZE(size);
     oam->oamMemory[id].gfxIndex = oamGfxPtrToOffset(oam, gfxOffset);
 
-    if(format != SpriteColorFormat_Bmp)
+    if (format != SpriteColorFormat_Bmp)
         oam->oamMemory[id].colorMode = (ObjColMode)format;
     else
     {
@@ -505,7 +505,7 @@ void oamSetAffineIndex(OamState* oam, int id, int affineIndex, bool sizeDouble)
     sassert(oam == &oamMain || oam == &oamSub, "oamSetAffineIndex() oam must be &oamMain or &oamSub");
     sassert(id >= 0 && id < SPRITE_COUNT, "oamSetAffineIndex() index is out of bounds, must be 0-127");
 
-    if(affineIndex >= 0 && affineIndex < 32)
+    if (affineIndex >= 0 && affineIndex < 32)
     {
         oam->oamMemory[id].rotationIndex = affineIndex;
         oam->oamMemory[id].isSizeDouble  = sizeDouble;

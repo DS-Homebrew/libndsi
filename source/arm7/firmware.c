@@ -52,7 +52,7 @@ void readFirmware(u32 address, void * destination, u32 size) {
 	u32 i;
 
 	// Read the data
-	for(i=0;i<size;i++) {
+	for (i=0;i<size;i++) {
 		buffer[i] = readwriteSPI(0);
 	}
 
@@ -79,7 +79,7 @@ static int writeFirmwarePage(u32 address,u8 *buffer) {
 	//Wait for Write Enable Latch to be set
 	REG_SPICNT = SPI_ENABLE|SPI_CONTINUOUS|SPI_DEVICE_NVRAM;
 	readwriteSPI(FIRMWARE_RDSR);
-	while((readwriteSPI(0)&0x02)==0); //Write Enable Latch
+	while ((readwriteSPI(0)&0x02)==0); //Write Enable Latch
 	REG_SPICNT = 0;
 
 	//page write
@@ -99,7 +99,7 @@ static int writeFirmwarePage(u32 address,u8 *buffer) {
 	// wait for programming to finish
 	REG_SPICNT = SPI_ENABLE|SPI_CONTINUOUS|SPI_DEVICE_NVRAM;
 	readwriteSPI(FIRMWARE_RDSR);
-	while(readwriteSPI(0)&0x01);	//Write In Progress
+	while (readwriteSPI(0)&0x01);	//Write In Progress
 	REG_SPICNT = 0;
 
 	leaveCriticalSection(oldIME);
@@ -114,11 +114,11 @@ static int writeFirmwarePage(u32 address,u8 *buffer) {
 //---------------------------------------------------------------------------------
 int writeFirmware(u32 address, void * source, u32 size) {
 //---------------------------------------------------------------------------------
-	if( ((address & 0xff) != 0) || ((size  & 0xff) != 0)) return -1;
+	if (((address & 0xff) != 0) || ((size  & 0xff) != 0)) return -1;
 	u8 *buffer = source;
 	int response = -1;
 
-	while (size >0 ) {
+	while (size >0) {
 		size -= 256;
 		if (writeFirmwarePage(address+size,buffer+size )) break;
 	}
@@ -138,7 +138,7 @@ void firmwareMsgHandler(int bytes, void *user_data) {
 	
 	fifoGetDatamsg(FIFO_FIRMWARE, bytes, (u8*)&msg);
 	
-	switch(msg.type) {
+	switch (msg.type) {
 		case FW_READ:
 			readFirmware(msg.blockParams.address, msg.blockParams.buffer, msg.blockParams.length);
 			response = 0;

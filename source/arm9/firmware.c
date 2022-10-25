@@ -42,7 +42,7 @@ void readFirmware(u32 address, void *buffer, u32 length) {
 
 	fifoSendDatamsg(FIFO_FIRMWARE, sizeof(msg), (u8*)&msg);
 
-	while(!fifoCheckValue32(FIFO_FIRMWARE));
+	while (!fifoCheckValue32(FIFO_FIRMWARE));
 	fifoGetValue32(FIFO_FIRMWARE);
 	DC_InvalidateRange(buffer,length);
 
@@ -52,7 +52,7 @@ void readFirmware(u32 address, void *buffer, u32 length) {
 int writeFirmware(u32 address, void *buffer, u32 length) {
 //---------------------------------------------------------------------------------
 
-	if ( ((address & 0xff) != 0) || ((length  & 0xff) != 0)) return -1;
+	if (((address & 0xff) != 0) || ((length  & 0xff) != 0)) return -1;
 	DC_FlushRange(buffer,length);
 
 	FifoMessage msg;
@@ -64,7 +64,7 @@ int writeFirmware(u32 address, void *buffer, u32 length) {
 	
 	fifoSendDatamsg(FIFO_FIRMWARE, sizeof(msg), (u8*)&msg);
 
-	while(!fifoCheckValue32(FIFO_FIRMWARE));
+	while (!fifoCheckValue32(FIFO_FIRMWARE));
 
 	return (int)fifoGetValue32(FIFO_FIRMWARE);
 

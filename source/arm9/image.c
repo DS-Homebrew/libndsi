@@ -45,9 +45,9 @@ void image24to16(sImage* img) {
 
 	u16* temp = (u16*)malloc(img->height*img->width*2);
 
-	for(y=0;y<img->height;y++)
+	for (y=0;y<img->height;y++)
 	{
-		for(x=0;x<img->width;x++)
+		for (x=0;x<img->width;x++)
 			temp[x+y*img->width]=(1<<15)|RGB15(img->image.data8[x*3+y*img->width*3]>>3, \
 			img->image.data8[x*3+y*img->width*3+1]>>3, img->image.data8[x*3+y*img->width*3+2]>>3);
 	}
@@ -68,7 +68,7 @@ void image8to16(sImage* img) {
 
 	u16* temp = (u16*)malloc(img->height*img->width*2);
 
-	for(i = 0; i < img->height * img->width; i++)
+	for (i = 0; i < img->height * img->width; i++)
 		temp[i] = img->palette[img->image.data8[i]] | (1<<15);
 
 	free (img->image.data8);
@@ -91,11 +91,11 @@ void image8to16trans(sImage* img, u8 transparentColor) {
 
 	u16* temp = (u16*)malloc(img->height*img->width*2);
 
-	for(i = 0; i < img->height * img->width; i++) {
+	for (i = 0; i < img->height * img->width; i++) {
 
 		c = img->image.data8[i];
 
-		if(c != transparentColor)
+		if (c != transparentColor)
 			temp[i] = img->palette[c] | (1<<15);
 		else
 			temp[i] = img->palette[c];
@@ -121,7 +121,7 @@ void imageTileData(sImage* img) {
 	int i = 0;
 	
 	//can only tile 8 bit data that is a multiple of 8 in dimention
-	if(img->bpp != 8 || (img->height & 3) != 0 || (img->width & 3) != 0) return;
+	if (img->bpp != 8 || (img->height & 3) != 0 || (img->width & 3) != 0) return;
 
 	th = img->height >> 3;
 	tw = img->width >> 3;
@@ -129,10 +129,10 @@ void imageTileData(sImage* img) {
 	//buffer to hold data
 	temp = (u32*)malloc(img->height * img->width);	
 
-	for(ty = 0; ty < th; ty++)
-		for(tx = 0; tx < tw; tx++)
-			for(iy = 0; iy < 8; iy++)
-				for(ix = 0; ix < 2; ix++)
+	for (ty = 0; ty < th; ty++)
+		for (tx = 0; tx < tw; tx++)
+			for (iy = 0; iy < 8; iy++)
+				for (ix = 0; ix < 2; ix++)
 					temp[i++] = img->image.data32[ix + tx * 2 + (iy + ty * 8) * tw * 2 ]; 
 
 	free(img->image.data32);
@@ -143,6 +143,6 @@ void imageTileData(sImage* img) {
 //---------------------------------------------------------------------------------
 void imageDestroy(sImage* img) {
 //---------------------------------------------------------------------------------
-	if(img->image.data8) free (img->image.data8);
-	if(img->palette && img->bpp == 8) free (img->palette);
+	if (img->image.data8) free (img->image.data8);
+	if (img->palette && img->bpp == 8) free (img->palette);
 }

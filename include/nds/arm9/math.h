@@ -86,12 +86,12 @@ int32 divf32(int32 num, int32 den)
 {
 	REG_DIVCNT = DIV_64_32;
 
-	while(REG_DIVCNT & DIV_BUSY);
+	while (REG_DIVCNT & DIV_BUSY);
 
 	REG_DIV_NUMER = ((int64)num) << 12;
 	REG_DIV_DENOM_L = den;
 
-	while(REG_DIVCNT & DIV_BUSY);
+	while (REG_DIVCNT & DIV_BUSY);
 
 	return (REG_DIV_RESULT_L);
 }
@@ -121,11 +121,11 @@ int32 sqrtf32(int32 a)
 {
 	REG_SQRTCNT = SQRT_64;
 
-	while(REG_SQRTCNT & SQRT_BUSY);
+	while (REG_SQRTCNT & SQRT_BUSY);
 
 	REG_SQRT_PARAM = ((int64)a) << 12;
 
-	while(REG_SQRTCNT & SQRT_BUSY);
+	while (REG_SQRTCNT & SQRT_BUSY);
 
 	return REG_SQRT_RESULT;
 }
@@ -144,12 +144,12 @@ int32 div32(int32 num, int32 den)
 {
 	REG_DIVCNT = DIV_32_32;
 
-	while(REG_DIVCNT & DIV_BUSY);
+	while (REG_DIVCNT & DIV_BUSY);
 
 	REG_DIV_NUMER_L = num;
 	REG_DIV_DENOM_L = den;
 
-	while(REG_DIVCNT & DIV_BUSY);
+	while (REG_DIVCNT & DIV_BUSY);
 
 	return (REG_DIV_RESULT_L);
 }
@@ -165,12 +165,12 @@ int32 mod32(int32 num, int32 den)
 {
 	REG_DIVCNT = DIV_32_32;
 
-	while(REG_DIVCNT & DIV_BUSY);
+	while (REG_DIVCNT & DIV_BUSY);
 
 	REG_DIV_NUMER_L = num;
 	REG_DIV_DENOM_L = den;
 
-	while(REG_DIVCNT & DIV_BUSY);
+	while (REG_DIVCNT & DIV_BUSY);
 
 	return (REG_DIVREM_RESULT_L);
 }
@@ -186,12 +186,12 @@ int32 div64(int64 num, int32 den)
 {
 	REG_DIVCNT = DIV_64_32;
 
-	while(REG_DIVCNT & DIV_BUSY);
+	while (REG_DIVCNT & DIV_BUSY);
 
 	REG_DIV_NUMER = num;
 	REG_DIV_DENOM_L = den;
 
-	while(REG_DIVCNT & DIV_BUSY);
+	while (REG_DIVCNT & DIV_BUSY);
 
 	return (REG_DIV_RESULT_L);
 }
@@ -207,12 +207,12 @@ int32 mod64(int64 num, int32 den)
 {
 	REG_DIVCNT = DIV_64_32;
 
-	while(REG_DIVCNT & DIV_BUSY);
+	while (REG_DIVCNT & DIV_BUSY);
 
 	REG_DIV_NUMER = num;
 	REG_DIV_DENOM_L = den;
 
-	while(REG_DIVCNT & DIV_BUSY);
+	while (REG_DIVCNT & DIV_BUSY);
 
 	return (REG_DIVREM_RESULT_L);
 }
@@ -227,11 +227,11 @@ u32 sqrt32(int a)
 {
 	REG_SQRTCNT = SQRT_32;
 
-	while(REG_SQRTCNT & SQRT_BUSY);
+	while (REG_SQRTCNT & SQRT_BUSY);
 
 	REG_SQRT_PARAM_L = a;
 
-	while(REG_SQRTCNT & SQRT_BUSY);
+	while (REG_SQRTCNT & SQRT_BUSY);
 
 	return REG_SQRT_RESULT;
 }
@@ -246,11 +246,11 @@ u32 sqrt64(long long a)
 {
 	REG_SQRTCNT = SQRT_64;
 
-	while(REG_SQRTCNT & SQRT_BUSY);
+	while (REG_SQRTCNT & SQRT_BUSY);
 
 	REG_SQRT_PARAM = a;
 
-	while(REG_SQRTCNT & SQRT_BUSY);
+	while (REG_SQRTCNT & SQRT_BUSY);
 
 	return REG_SQRT_RESULT;
 }

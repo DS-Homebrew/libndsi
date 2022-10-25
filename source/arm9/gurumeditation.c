@@ -221,7 +221,7 @@ void guruMeditationDump() {
 
 	int offset = 8;
 
-	if ( currentMode == 0x17 ) {
+	if (currentMode == 0x17) {
 		iprintf ("\x1b[10Cdata abort!\n\n");
 		codeAddress = exceptionRegisters[15] - offset;
 		if (	(codeAddress > 0x02000000 && codeAddress < 0x02400000) ||
@@ -243,14 +243,14 @@ void guruMeditationDump() {
 	iprintf("  pc: %08lX addr: %08lX\n\n",codeAddress,exceptionAddress);
 
 	int i;
-	for ( i=0; i < 8; i++ ) {
+	for (i=0; i < 8; i++) {
 		iprintf(	"  %s: %08lX   %s: %08lX\n",
 		registerNames[i], exceptionRegisters[i],
 		registerNames[i+8],exceptionRegisters[i+8]);
 	}
 	iprintf("\n");
 	u32 *stack = (u32 *)exceptionRegisters[13];
-	for ( i=0; i<10; i++ ) {
+	for (i=0; i<10; i++) {
 		iprintf( "\x1b[%d;2H%08lX:  %08lX %08lX", i + 14, (u32)&stack[i*2],stack[i*2], stack[(i*2)+1] );
 	}
 }
@@ -259,7 +259,7 @@ void guruMeditationDump() {
 static void defaultHandler() {
 //---------------------------------------------------------------------------------
 	guruMeditationDump();
-	while(1);
+	while (1);
 }
 
 //---------------------------------------------------------------------------------

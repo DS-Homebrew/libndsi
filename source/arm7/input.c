@@ -12,7 +12,7 @@ enum{
 	KEY_LID = (1<<7)
 }Keys;
 
-void inputGetAndSend(void){
+void inputGetAndSend(void) {
 	static int sleepCounter = 0;
 
 	touchPosition tempPos = {0};

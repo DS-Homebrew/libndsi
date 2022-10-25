@@ -72,7 +72,7 @@ GL_STATIC_INL
 void PosTest(v16 x, v16 y, v16 z)
 {
 	PosTest_Asynch(x,y,z);
-	while(PosTestBusy());
+	while (PosTestBusy());
 }
 
 GL_STATIC_INL

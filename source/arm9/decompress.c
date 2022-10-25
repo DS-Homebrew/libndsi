@@ -45,7 +45,7 @@ TDecompressionStream decomStream = {
 
 void decompress(const void* data, void* dst, DecompressType type)
 {
-	switch(type)
+	switch (type)
 	{
 		case LZ77Vram:
 			swiDecompressLZSSVram((void*)data, (void*)dst, 0, &decomStream);
@@ -81,7 +81,7 @@ void decompressStream(const void* data, void* dst, DecompressType type, getByteC
 		readCB
 	};
 
-	switch(type)
+	switch (type)
 	{
 		case LZ77Vram:
 			swiDecompressLZSSVram((void*)data, (void*)dst, 0, &decompresStream);

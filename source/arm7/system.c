@@ -43,7 +43,7 @@ void twlDisableSlot1();
 void enableSlot1() {
 //---------------------------------------------------------------------------------
 
-	if(isDSiMode()) twlEnableSlot1();
+	if (isDSiMode()) twlEnableSlot1();
 
 }
 
@@ -51,7 +51,7 @@ void enableSlot1() {
 void disableSlot1() {
 //---------------------------------------------------------------------------------
 
-	if(isDSiMode()) twlDisableSlot1();
+	if (isDSiMode()) twlDisableSlot1();
 
 }
 
@@ -63,7 +63,7 @@ void powerValueHandler(u32 value, void* user_data) {
 	u32 ie_save;
 	int battery, backlight, power;
 
-	switch(value & 0xFFFF0000) {
+	switch (value & 0xFFFF0000) {
 		//power control
 	case PM_REQ_LED:
 		ledBlink(value);
@@ -137,7 +137,7 @@ void powerValueHandler(u32 value, void* user_data) {
 //---------------------------------------------------------------------------------
 void systemSleep(void) {
 //---------------------------------------------------------------------------------
-	if(!sleepIsEnabled) return;
+	if (!sleepIsEnabled) return;
 	//puts arm9 to sleep which then notifies arm7 above (which causes arm7 to sleep)
 	fifoSendValue32(FIFO_SYSTEM, PM_REQ_SLEEP);
 }

@@ -171,7 +171,7 @@ static int micTimer = 0;
 static MIC_BUF_SWAP_CB swapCallback;
 
 //---------------------------------------------------------------------------------
-void micStartRecording(u8* buffer, int length, int freq, int timer, bool eightBitSample, MIC_BUF_SWAP_CB bufferSwapCallback ) {
+void micStartRecording(u8* buffer, int length, int freq, int timer, bool eightBitSample, MIC_BUF_SWAP_CB bufferSwapCallback) {
 //---------------------------------------------------------------------------------
   microphone_front_buffer = buffer + length / 2;
   microphone_back_buffer = buffer;
@@ -202,7 +202,7 @@ int micStopRecording(void) {
   TIMER_CR(micTimer) &= ~TIMER_ENABLE;
   micOff();
 
-  if(swapCallback)
+  if (swapCallback)
 	  swapCallback(microphone_back_buffer, eightBit ? sampleCount : (sampleCount << 1));
 
   microphone_front_buffer = microphone_back_buffer = 0;
@@ -219,29 +219,24 @@ void micTimerHandler(void) {
 
 	
 
-    if(eightBit)
-    {
+    if (eightBit) {
     	*(microphone_back_buffer+sampleCount) = micReadData8() ^ 0x80;
-    }
-    else
-    {
+    } else {
 	   *(u16*)(microphone_back_buffer + sampleCount * 2) = (micReadData12() - 2048) << 4; // ^ 0x8000;
 	}
-  
 
     sampleCount++;
 
 	len = eightBit ? sampleCount : (sampleCount << 1);
-    
-	if(len >= microphone_buffer_length)
-	{
+
+	if (len >= microphone_buffer_length) {
 		sampleCount = 0;
-		
+
 		u8* temp = microphone_back_buffer;
 		microphone_back_buffer = microphone_front_buffer;
 		microphone_front_buffer = temp;
 
-		if(swapCallback)
+		if (swapCallback)
 			swapCallback(microphone_front_buffer, microphone_buffer_length);
 	}
 	

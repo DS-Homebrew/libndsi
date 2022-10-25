@@ -130,9 +130,9 @@ s32 sinLutLookup(int i)
 
 	int lutVal = i & LUT_QUARTER_ANGLE_MASK;
 
-	if(i < 128) return SIN_LUT[lutVal];				//first quarter
-	if(i < 256) return SIN_LUT[LUT_SIZE - lutVal];	//second quarter
-	if(i < 384) return -SIN_LUT[lutVal];			//thirth quarter
+	if (i < 128) return SIN_LUT[lutVal];				//first quarter
+	if (i < 256) return SIN_LUT[LUT_SIZE - lutVal];	//second quarter
+	if (i < 384) return -SIN_LUT[lutVal];			//thirth quarter
 	return -SIN_LUT[LUT_SIZE - lutVal];				//fourth quarter
 }
 
@@ -166,9 +166,9 @@ s32 tanLutLookup(int i)
 
  	int lutVal = i & LUT_QUARTER_ANGLE_MASK;
 
-	if(i == 128) return MAX_TAN;
+	if (i == 128) return MAX_TAN;
 
- 	if(i < 128) return TAN_LUT[lutVal];
+ 	if (i < 128) return TAN_LUT[lutVal];
 
  	return -TAN_LUT[LUT_SIZE - lutVal];
 }
@@ -198,12 +198,12 @@ int asinComp(const void *a, const void *b)
 	u16 par = (*(u16*)a);
 	u16* lut = (u16*)b;
 
-	if(par == lut[0] || (par > lut[0] && par < lut[1]))
+	if (par == lut[0] || (par > lut[0] && par < lut[1]))
 	{
 		return 0;
 	}
 
-	if(par < lut[0])
+	if (par < lut[0])
 	{
 		return -1;
 	}
@@ -216,7 +216,7 @@ s16 asinLerp(s16 par)
 	bool neg = false;
 	u16 param;
 
-	if(par < 0) {
+	if (par < 0) {
 		param = -par;
 		neg = true;
 	} else {
@@ -226,17 +226,17 @@ s16 asinLerp(s16 par)
 	//convert from 4.12 to 1.15
 	param = param << (SIN_BITSFRACTION - 12);
 
-	if(param < ANGLE_FRACTION)
+	if (param < ANGLE_FRACTION)
 		return 0;
 
-	if(param > SIN_LUT[LUT_SIZE])
+	if (param > SIN_LUT[LUT_SIZE])
 	{
 		return (neg ? -LIBNDSI_QUARTER_ANGLE : LIBNDSI_QUARTER_ANGLE);
 	}
 
 	u16* lutIndexPointer = (u16*)bsearch(&param, SIN_LUT, LUT_SIZE + 1, sizeof(u16), asinComp);
 
-	if(lutIndexPointer == NULL)
+	if (lutIndexPointer == NULL)
 		return 0;
 
 	int index = (int) (lutIndexPointer-SIN_LUT);
@@ -260,12 +260,12 @@ int atanComp(const void *a, const void *b)
 	s32 par = (*(s32*)a);
 	s32* lut = (s32*)b;
 
-	if(par == lut[0] || (par > lut[0] && par < lut[1]))
+	if (par == lut[0] || (par > lut[0] && par < lut[1]))
 	{
 		return 0;
 	}
 
-	if(par < lut[0])
+	if (par < lut[0])
 	{
 		return -1;
 	}
@@ -282,7 +282,7 @@ int atanComp(const void *a, const void *b)
 s32 atanLerp(s32 par)
 {
 	bool neg = false;
-	if(par < 0)
+	if (par < 0)
 	{
 		par = -par;
 		neg = true;
@@ -294,7 +294,7 @@ s32 atanLerp(s32 par)
 	zero will cause a divide by zero later, so this saves the trouble of
 	dealing with that.
 	// * /
-	if(par < TAN_LUT[1])
+	if (par < TAN_LUT[1])
 	{
 		return 0;
 	}
@@ -305,14 +305,14 @@ s32 atanLerp(s32 par)
 	doesn't run bounds checking. It is faster to add this than fix that
 	(in terms of runtime speed, I'm not just being lazy).
 	* /
-	if(par >= TAN_LUT[LUT_SIZE])
+	if (par >= TAN_LUT[LUT_SIZE])
 	{
 		return inttof32(128);
 	}
 
 	s32* at = (s32*)bsearch(&par, TAN_LUT, LUT_SIZE, sizeof(s32), atanComp);
 
-	if(at == NULL)
+	if (at == NULL)
 	{
 		at = TAN_LUT+LUT_SIZE;
 		neg = !neg;

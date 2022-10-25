@@ -329,7 +329,7 @@ int fifoGetDatamsg(int channel, int buffersize, u8 * destbuffer);
 static inline void fifoWaitValue32(int channel) {
 //---------------------------------------------------------------------------------
 
-	while(!fifoCheckValue32(channel)) {
+	while (!fifoCheckValue32(channel)) {
 		swiIntrWait(1,IRQ_FIFO_NOT_EMPTY);
 	}
 

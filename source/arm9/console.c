@@ -75,7 +75,7 @@ PrintConsole currentCopy;
 
 PrintConsole* currentConsole = &currentCopy;
 
-PrintConsole* consoleGetDefault(void){return &defaultConsole;}
+PrintConsole* consoleGetDefault(void) {return &defaultConsole;}
 
 void consolePrintChar(char c);
 
@@ -95,7 +95,7 @@ static void consoleCls(char mode) {
 			colTemp = currentConsole->cursorX ;
 			rowTemp = currentConsole->cursorY ;
 
-			while(i++ < ((currentConsole->windowHeight * currentConsole->windowWidth) - (rowTemp * currentConsole->consoleWidth + colTemp)))
+			while (i++ < ((currentConsole->windowHeight * currentConsole->windowWidth) - (rowTemp * currentConsole->consoleWidth + colTemp)))
 				consolePrintChar(' ');
 
 			currentConsole->cursorX  = colTemp;
@@ -122,7 +122,7 @@ static void consoleCls(char mode) {
 			currentConsole->cursorY  = 0;
 			currentConsole->cursorX  = 0;
 
-			while(i++ < currentConsole->windowHeight * currentConsole->windowWidth)
+			while (i++ < currentConsole->windowHeight * currentConsole->windowWidth)
 				consolePrintChar(' ');
 
 			currentConsole->cursorY  = 0;
@@ -145,7 +145,7 @@ static void consoleClearLine(char mode) {
 		{
 			colTemp = currentConsole->cursorX ;
 
-			while(i++ < (currentConsole->windowWidth - colTemp)) {
+			while (i++ < (currentConsole->windowWidth - colTemp)) {
 				consolePrintChar(' ');
 			}
 
@@ -159,7 +159,7 @@ static void consoleClearLine(char mode) {
 
 			currentConsole->cursorX  = 0;
 
-			while(i++ < ((currentConsole->windowWidth - colTemp)-2)) {
+			while (i++ < ((currentConsole->windowWidth - colTemp)-2)) {
 				consolePrintChar(' ');
 			}
 
@@ -173,7 +173,7 @@ static void consoleClearLine(char mode) {
 
 			currentConsole->cursorX  = 0;
 
-			while(i++ < currentConsole->windowWidth) {
+			while (i++ < currentConsole->windowWidth) {
 				consolePrintChar(' ');
 			}
 
@@ -185,7 +185,7 @@ static void consoleClearLine(char mode) {
 		{
 			colTemp = currentConsole->cursorX ;
 
-			while(i++ < (currentConsole->windowWidth - colTemp)) {
+			while (i++ < (currentConsole->windowWidth - colTemp)) {
 				consolePrintChar(' ');
 			}
 
@@ -214,16 +214,16 @@ ssize_t con_write(struct _reent *r,void *fd,const char *ptr, size_t len) {
 	char *tmp = (char*)ptr;
 	int intensity = 0;
 
-	if(!tmp || len<=0) return -1;
+	if (!tmp || len<=0) return -1;
 
 	i = 0;
 
-	while(i<len) {
+	while (i<len) {
 
 		chr = *(tmp++);
 		i++; count++;
 
-		if ( chr == 0x1b && *tmp == '[' ) {
+		if (chr == 0x1b && *tmp == '[') {
 			bool escaping = true;
 			char *escapeseq	= tmp;
 			int escapelen = 0;
@@ -305,16 +305,16 @@ ssize_t con_write(struct _reent *r,void *fd,const char *ptr, size_t len) {
 						parameter -= 30;
 
 						//39 is the reset code
-						if(parameter == 9){
+						if (parameter == 9) {
 							parameter = 15;
 						}
-						else if(parameter > 8){
+						else if (parameter > 8) {
 							parameter -= 2;
 						}
-						else if(intensity){
+						else if (intensity) {
 							parameter += 8;
 						}
-						if(parameter < 16 && parameter >= 0){
+						if (parameter < 16 && parameter >= 0) {
 							currentConsole->fontCurPal = parameter << 12;
 						}
 
@@ -373,7 +373,7 @@ void consoleLoadFont(PrintConsole* console) {
 	u16* palette = BG_PALETTE_SUB;
 
 	//check which display is being utilized
-	if(console->fontBgGfx < BG_GFX_SUB){
+	if (console->fontBgGfx < BG_GFX_SUB) {
 			palette = BG_PALETTE;
 	}
 
@@ -382,11 +382,11 @@ void consoleLoadFont(PrintConsole* console) {
 
 	} else if (console->font.bpp == 4) {
 
-		if(!console->font.convertSingleColor) {
+		if (!console->font.convertSingleColor) {
 
-			if(console->font.gfx)
+			if (console->font.gfx)
 				dmaCopy(console->font.gfx, console->fontBgGfx, console->font.numChars * 64 / 2);
-			if(console->font.pal)
+			if (console->font.pal)
 				dmaCopy(console->font.pal, palette + console->fontCurPal * 16, console->font.numColors*2);
 
 			console->fontCurPal <<= 12;
@@ -396,13 +396,13 @@ void consoleLoadFont(PrintConsole* console) {
 			for (i = 0; i < console->font.numChars * 16; i++) {
 				u16 temp = 0;
 
-				if(console->font.gfx[i] & 0xF)
+				if (console->font.gfx[i] & 0xF)
 					temp |= 0xF;
-				if(console->font.gfx[i] & 0xF0)
+				if (console->font.gfx[i] & 0xF0)
 					temp |= 0xF0;
-				if(console->font.gfx[i] & 0xF00)
+				if (console->font.gfx[i] & 0xF00)
 					temp |= 0xF00;
-				if(console->font.gfx[i] & 0xF000)
+				if (console->font.gfx[i] & 0xF000)
 					temp |= 0xF000;
 
 				console->fontBgGfx[i] = temp;
@@ -432,28 +432,28 @@ void consoleLoadFont(PrintConsole* console) {
 			palette[16 * 16 - 1] = RGB15(31,31,31); //47 & 39 bright white
 		}
 
-	} else if(console->font.bpp == 8) {
+	} else if (console->font.bpp == 8) {
 
 		console->fontCurPal = 0;
 
-		if(!console->font.convertSingleColor) {
+		if (!console->font.convertSingleColor) {
 
-			if(console->font.gfx)
+			if (console->font.gfx)
 				dmaCopy(console->font.gfx, console->fontBgGfx, console->font.numChars * 64);
-			if(console->font.pal)
+			if (console->font.pal)
 				dmaCopy(console->font.pal, palette, console->font.numColors*2);
 		} else {
 
-			for(i = 0; i < console->font.numChars * 16; i++) {
+			for (i = 0; i < console->font.numChars * 16; i++) {
 				u32 temp = 0;
 
-				if(console->font.gfx[i] & 0xF)
+				if (console->font.gfx[i] & 0xF)
 					temp = 255;
-				if(console->font.gfx[i] & 0xF0)
+				if (console->font.gfx[i] & 0xF0)
 					temp |= 255 << 8;
-				if(console->font.gfx[i] & 0xF00)
+				if (console->font.gfx[i] & 0xF00)
 					temp |= 255 << 16;
-				if(console->font.gfx[i] & 0xF000)
+				if (console->font.gfx[i] & 0xF000)
 					temp |= 255 << 24;
 
 				((u32*)console->fontBgGfx)[i] = temp;
@@ -476,12 +476,12 @@ void consoleLoadFont(PrintConsole* console) {
 PrintConsole* consoleInit(PrintConsole* console, int layer,
 				BgType type, BgSize size,
 				int mapBase, int tileBase,
-				bool mainDisplay, bool loadGraphics){
+				bool mainDisplay, bool loadGraphics) {
 //---------------------------------------------------------------------------------
 
 	static bool firstConsoleInit = true;
 
-	if(firstConsoleInit) {
+	if (firstConsoleInit) {
 		devoptab_list[STD_OUT] = &dotab_stdout;
 		devoptab_list[STD_ERR] = &dotab_stdout;
 
@@ -491,7 +491,7 @@ PrintConsole* consoleInit(PrintConsole* console, int layer,
 		firstConsoleInit = false;
 	}
 
-	if(console) {
+	if (console) {
 		currentConsole = console;
 	} else {
 		console = currentConsole;
@@ -499,7 +499,7 @@ PrintConsole* consoleInit(PrintConsole* console, int layer,
 
 	*currentConsole = defaultConsole;
 
-	if(mainDisplay) {
+	if (mainDisplay) {
 		console->bgId = bgInit(layer, type, size, mapBase, tileBase);
 	} else {
 		console->bgId = bgInitSub(layer, type, size, mapBase, tileBase);
@@ -512,14 +512,14 @@ PrintConsole* consoleInit(PrintConsole* console, int layer,
 
 	consoleCls('2');
 
-	if(loadGraphics)
+	if (loadGraphics)
 		consoleLoadFont(console);
 
 	return currentConsole;
 
 }
 //---------------------------------------------------------------------------------
-PrintConsole *consoleSelect(PrintConsole* console){
+PrintConsole *consoleSelect(PrintConsole* console) {
 //---------------------------------------------------------------------------------
 	PrintConsole *tmp = currentConsole;
 	currentConsole = console;
@@ -527,10 +527,10 @@ PrintConsole *consoleSelect(PrintConsole* console){
 }
 
 //---------------------------------------------------------------------------------
-void consoleSetFont(PrintConsole* console, ConsoleFont* font){
+void consoleSetFont(PrintConsole* console, ConsoleFont* font) {
 //---------------------------------------------------------------------------------
 
-	if(!console) console = currentConsole;
+	if (!console) console = currentConsole;
 
 	console->font = *font;
 
@@ -539,12 +539,12 @@ void consoleSetFont(PrintConsole* console, ConsoleFont* font){
 }
 
 //---------------------------------------------------------------------------------
-void consoleDebugInit(DebugDevice device){
+void consoleDebugInit(DebugDevice device) {
 //---------------------------------------------------------------------------------
 
 	int buffertype = _IONBF;
 
-	switch(device) {
+	switch (device) {
 
 	case DebugDevice_NOCASH:
 		devoptab_list[STD_ERR] = &dotab_nocash;
@@ -580,18 +580,18 @@ static void newRow() {
 
 	currentConsole->cursorY ++;
 
-	if(currentConsole->cursorY  >= currentConsole->windowHeight)  {
+	if (currentConsole->cursorY  >= currentConsole->windowHeight)  {
 		int rowCount;
 		int colCount;
 
 		currentConsole->cursorY --;
 
-		for(rowCount = 0; rowCount < currentConsole->windowHeight - 1; rowCount++)
-			for(colCount = 0; colCount < currentConsole->windowWidth; colCount++)
+		for (rowCount = 0; rowCount < currentConsole->windowHeight - 1; rowCount++)
+			for (colCount = 0; colCount < currentConsole->windowWidth; colCount++)
 				currentConsole->fontBgMap[(colCount + currentConsole->windowX) + (rowCount + currentConsole->windowY) * currentConsole->consoleWidth] =
 					currentConsole->fontBgMap[(colCount + currentConsole->windowX) + (rowCount + currentConsole->windowY + 1) * currentConsole->consoleWidth];
 
-		for(colCount = 0; colCount < currentConsole->windowWidth; colCount++)
+		for (colCount = 0; colCount < currentConsole->windowWidth; colCount++)
 			currentConsole->fontBgMap[(colCount + currentConsole->windowX) + (rowCount + currentConsole->windowY) * currentConsole->consoleWidth] =
 				(' ' + currentConsole->fontCharOffset - currentConsole->font.asciiOffset);
 
@@ -603,19 +603,19 @@ static void newRow() {
 void consolePrintChar(char c) {
 //---------------------------------------------------------------------------------
 	if (c==0) return;
-	if(currentConsole->fontBgMap == 0) return;
+	if (currentConsole->fontBgMap == 0) return;
 
-	if(currentConsole->PrintChar)
-		if(currentConsole->PrintChar(currentConsole, c))
+	if (currentConsole->PrintChar)
+		if (currentConsole->PrintChar(currentConsole, c))
 			return;
 
-	if(currentConsole->cursorX  >= currentConsole->windowWidth) {
+	if (currentConsole->cursorX  >= currentConsole->windowWidth) {
 		currentConsole->cursorX  = 0;
 
 		newRow();
 	}
 
-	switch(c) {
+	switch (c) {
 		/*
 		The only special characters we will handle are tab (\t), carriage return (\r), line feed (\n)
 		and backspace (\b).
@@ -628,8 +628,8 @@ void consolePrintChar(char c) {
 		case 8:
 			currentConsole->cursorX--;
 
-			if(currentConsole->cursorX < 0) {
-				if(currentConsole->cursorY > 0) {
+			if (currentConsole->cursorX < 0) {
+				if (currentConsole->cursorY > 0) {
 					currentConsole->cursorX = currentConsole->windowX - 1;
 					currentConsole->cursorY--;
 				} else {
@@ -663,10 +663,10 @@ void consoleClear(void) {
 }
 
 //---------------------------------------------------------------------------------
-void consoleSetWindow(PrintConsole* console, int x, int y, int width, int height){
+void consoleSetWindow(PrintConsole* console, int x, int y, int width, int height) {
 //---------------------------------------------------------------------------------
 
-	if(!console) console = currentConsole;
+	if (!console) console = currentConsole;
 
 	console->windowWidth = width;
 	console->windowHeight = height;

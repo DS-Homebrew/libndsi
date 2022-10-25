@@ -905,7 +905,7 @@ static inline
 */
 u16* bgGetGfxPtr(int id)
 {
-	if(bgState[id].type < BgType_Bmp8)
+	if (bgState[id].type < BgType_Bmp8)
 		return (id < 4) ? (u16*)(BG_TILE_RAM(bgGetTileBase(id))) : ((u16*)BG_TILE_RAM_SUB(bgGetTileBase(id)));
 	else
 		return (id < 4) ? (u16*)(BG_GFX + 0x2000 * (bgGetMapBase(id))) : (u16*)(BG_GFX_SUB + 0x2000 * (bgGetMapBase(id)));
@@ -951,7 +951,7 @@ static inline
 */
 void bgShow(int id)
 {
-	if(id < 4)
+	if (id < 4)
 		videoBgEnable(id);
 	else
 		videoBgEnableSub(id & 3);
@@ -964,7 +964,7 @@ static inline
 */
 void bgHide(int id)
 {
-	if(id < 4)
+	if (id < 4)
 		videoBgDisable(id);
 	else
 		videoBgDisableSub(id & 3);

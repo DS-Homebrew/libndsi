@@ -55,13 +55,13 @@ void readUserSettings() {
 	short calc2CRC = swiCRC16( 0xffff, &slots[1], sizeof(PERSONAL_DATA));
 
 	// bail out if neither slot is valid
-	if ( calc1CRC != slot1CRC && calc2CRC != slot2CRC) return;
+	if (calc1CRC != slot1CRC && calc2CRC != slot2CRC) return;
 
 	// if both slots are valid pick the most recent
-	if ( calc1CRC == slot1CRC && calc2CRC == slot2CRC ) {
+	if (calc1CRC == slot1CRC && calc2CRC == slot2CRC) {
 		currentSettingsSlot = (slot2count == (( slot1count + 1 ) & 0x7f) ? 1 : 0);
 	} else {
-		if ( calc2CRC == slot2CRC )
+		if (calc2CRC == slot2CRC )
 			currentSettingsSlot = 1;
 	}
 	*PersonalData = slots[currentSettingsSlot];

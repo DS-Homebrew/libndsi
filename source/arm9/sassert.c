@@ -52,5 +52,5 @@ void __sassert(const char *fileName, int lineNumber, const char* conditionString
     va_end(ap);
 
     //todo: exit properly
-    while(1);
+    while (1);
 }

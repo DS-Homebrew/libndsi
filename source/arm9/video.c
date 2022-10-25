@@ -83,7 +83,7 @@ void setBrightness( int screen, int level) {
 //---------------------------------------------------------------------------------
 	int mode = 1<<14;
 
-	if ( level < 0){
+	if (level < 0) {
 		level = -level;
 		mode = 2<<14;
 	}

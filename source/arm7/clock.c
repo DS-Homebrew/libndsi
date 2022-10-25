@@ -94,7 +94,7 @@ void rtcTransaction(uint8 * command, uint32 commandLength, uint8 * result, uint3
 			data = data << 1;
 		}
 	// Write parameter bytes (low bit first)
-	for ( ; commandLength > 1; commandLength--) {
+	for (; commandLength > 1; commandLength--) {
 		data = *command++;
 
 		for (bit = 0; bit < 8; bit++) {
@@ -109,7 +109,7 @@ void rtcTransaction(uint8 * command, uint32 commandLength, uint8 * result, uint3
 	}
 
 	// Read result bytes (low bit first)
-	for ( ; resultLength > 0; resultLength--) {
+	for (; resultLength > 0; resultLength--) {
 		data = 0;
 
 		for (bit = 0; bit < 8; bit++) {
@@ -160,7 +160,7 @@ void rtcGetTimeAndDate(uint8 * time) {
 	command = READ_STATUS_REG1;
 	rtcTransaction(&command, 1, &status, 1);
 
-	if ( status & STATUS_24HRS ) {
+	if (status & STATUS_24HRS) {
 		time[4] &= 0x3f;
 	} else {
 
@@ -174,7 +174,7 @@ void rtcSetTimeAndDate(uint8 * time) {
 	uint8 command[8];
 
 	int i;
-	for ( i=0; i< 7; i++ ) {
+	for (i=0; i< 7; i++) {
 		command[i+1] = time[i];
 	}
 	command[0] = WRITE_TIME_AND_DATE;
@@ -192,7 +192,7 @@ void rtcGetTime(uint8 * time) {
 
 	command = READ_STATUS_REG1;
 	rtcTransaction(&command, 1, &status, 1);
-	if ( status & STATUS_24HRS ) {
+	if (status & STATUS_24HRS) {
 		time[0] &= 0x3f;
 	} else {
 
@@ -207,7 +207,7 @@ void rtcSetTime(uint8 * time) {
 	uint8 command[4];
 
 	int i;
-	for ( i=0; i< 3; i++ ) {
+	for (i=0; i< 3; i++) {
 		command[i+1] = time[i];
 	}
 	command[0] = WRITE_TIME;
@@ -239,7 +239,7 @@ static const short ydays[] = {
 #define monthlen(m, y) (ydays[(m)+1] - ydays[m] + leapday (m, y))
 
 //---------------------------------------------------------------------------------
-static time_t __mktime( RTCtime *dstime ) {
+static time_t __mktime( RTCtime *dstime) {
 //---------------------------------------------------------------------------------
 	int years, months, days, hours, minutes, seconds;
 

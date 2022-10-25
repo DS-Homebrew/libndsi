@@ -553,7 +553,7 @@ void glSprite( int x, int y, int flipmode, const glImage *spr )
 
 	
  
-    if ( spr->textureID != gCurrentTexture )
+    if (spr->textureID != gCurrentTexture )
     {
         glBindTexture( GL_TEXTURE_2D, spr->textureID );
         gCurrentTexture = spr->textureID;
@@ -597,7 +597,7 @@ void glSpriteScale( int x, int y, s32 scale, int flipmode, const glImage *spr )
  	int v2 = spr->v_off + (( flipmode & GL_FLIP_V ) ? 0		    	: spr->height-1);
  	
  
-    if ( spr->textureID != gCurrentTexture )
+    if (spr->textureID != gCurrentTexture )
     {
         glBindTexture( GL_TEXTURE_2D, spr->textureID );
         gCurrentTexture = spr->textureID;
@@ -649,7 +649,7 @@ void glSpriteScaleXY( int x, int y, s32 scaleX, s32 scaleY, int flipmode, const 
  	int v2 = spr->v_off + (( flipmode & GL_FLIP_V ) ? 0		    	: spr->height-1);
  	
  
-    if ( spr->textureID != gCurrentTexture )
+    if (spr->textureID != gCurrentTexture )
     {
         glBindTexture( GL_TEXTURE_2D, spr->textureID );
         gCurrentTexture = spr->textureID;
@@ -703,7 +703,7 @@ void glSpriteRotate( int x, int y, s32 angle, int flipmode, const glImage *spr )
 	int v1 = spr->v_off + (( flipmode & GL_FLIP_V ) ? spr->height-1 : 0);
  	int v2 = spr->v_off + (( flipmode & GL_FLIP_V ) ? 0		    	: spr->height-1);
  	
-    if ( spr->textureID != gCurrentTexture )
+    if (spr->textureID != gCurrentTexture )
     {
         glBindTexture( GL_TEXTURE_2D, spr->textureID );
         gCurrentTexture = spr->textureID;
@@ -760,7 +760,7 @@ void glSpriteRotateScale( int x, int y, s32 angle, s32 scale, int flipmode, cons
 	int v1 = spr->v_off + (( flipmode & GL_FLIP_V ) ? spr->height-1 : 0);
  	int v2 = spr->v_off + (( flipmode & GL_FLIP_V ) ? 0		    	: spr->height-1);
  	
-    if ( spr->textureID != gCurrentTexture )
+    if (spr->textureID != gCurrentTexture )
     {
         glBindTexture( GL_TEXTURE_2D, spr->textureID );
         gCurrentTexture = spr->textureID;
@@ -820,7 +820,7 @@ void glSpriteRotateScaleXY( int x, int y, s32 angle, s32 scaleX, s32 scaleY, int
 	int v1 = spr->v_off + (( flipmode & GL_FLIP_V ) ? spr->height-1 : 0);
  	int v2 = spr->v_off + (( flipmode & GL_FLIP_V ) ? 0		    	: spr->height-1);
  	
-    if ( spr->textureID != gCurrentTexture )
+    if (spr->textureID != gCurrentTexture )
     {
         glBindTexture( GL_TEXTURE_2D, spr->textureID );
         gCurrentTexture = spr->textureID;
@@ -876,7 +876,7 @@ void glSpriteStretchHorizontal(int x, int y, int length_x, const glImage *spr )
  	int v2 = spr->v_off + spr->height;
  	
     
-	if ( spr->textureID != gCurrentTexture )
+	if (spr->textureID != gCurrentTexture )
     {
         glBindTexture( GL_TEXTURE_2D, spr->textureID );
         gCurrentTexture = spr->textureID;
@@ -973,7 +973,7 @@ void glSpriteOnQuad( int x1, int y1,
  	int v2 = spr->v_off + (( flipmode & GL_FLIP_V ) ? 0		    	: spr->height-1);
  	
  
-    if ( spr->textureID != gCurrentTexture )
+    if (spr->textureID != gCurrentTexture )
     {
         glBindTexture( GL_TEXTURE_2D, spr->textureID );
         gCurrentTexture = spr->textureID;
@@ -1029,7 +1029,7 @@ int glLoadSpriteSet( glImage              *sprite,
 	
 	int i;
 	// init sprites texture coords and texture ID
-	for ( i=0; i < numframes; i++)
+	for (i=0; i < numframes; i++)
 	{
 		int j = i * 4; // texcoords array is u_off, wid, hei
 		sprite[i].textureID = textureID;

@@ -765,13 +765,13 @@ void glCallList(const u32* list) {
 
 	// don't start DMAing while anything else is being DMAed because FIFO DMA is touchy as hell
 	//    If anyone can explain this better that would be great. -- gabebear
-	while((DMA_CR(0) & DMA_BUSY)||(DMA_CR(1) & DMA_BUSY)||(DMA_CR(2) & DMA_BUSY)||(DMA_CR(3) & DMA_BUSY));
+	while ((DMA_CR(0) & DMA_BUSY)||(DMA_CR(1) & DMA_BUSY)||(DMA_CR(2) & DMA_BUSY)||(DMA_CR(3) & DMA_BUSY));
 
 	// send the packed list asynchronously via DMA to the FIFO
 	DMA_SRC(0) = (u32)list;
 	DMA_DEST(0) = 0x4000400;
 	DMA_CR(0) = DMA_FIFO | count;
-	while(DMA_CR(0) & DMA_BUSY);
+	while (DMA_CR(0) & DMA_BUSY);
 }
 GL_STATIC_INL
 /*! \fn  void glPolyFmt(u32 params)
@@ -1189,12 +1189,12 @@ GL_STATIC_INL
 \brief Resets matrix stack to top level */
 void glResetMatrixStack(void) {
 	// make sure there are no push/pops that haven't executed yet
-	while(GFX_STATUS & BIT(14)){
+	while (GFX_STATUS & BIT(14)) {
 		GFX_STATUS |= 1 << 15; // clear push/pop errors or push/pop busy bit never clears
 	}
 
 	// pop the projection stack to the top; poping 0 off an empty stack causes an error... weird?
-	if((GFX_STATUS&(1<<13))!=0) {
+	if ((GFX_STATUS&(1<<13))!=0) {
 		glMatrixMode(GL_PROJECTION);
 		glPopMatrix(1);
 	}
@@ -1226,7 +1226,7 @@ GL_STATIC_INL
 \param table pointer to the 32 color palette to load into the toon table*/
 void glSetToonTable(const uint16 *table) {
 	int i;
-	for(i = 0; i < 32; i++ )
+	for (i = 0; i < 32; i++ )
 		GFX_TOON_TABLE[i] = table[i];
 }
 
@@ -1238,7 +1238,7 @@ GL_STATIC_INL
 \param color the color to set for that range */
  void glSetToonTableRange(int start, int end, rgb color) {
 	int i;
-	for(i = start; i <= end; i++ )
+	for (i = start; i <= end; i++ )
 		GFX_TOON_TABLE[i] = color;
 }
 
@@ -1253,27 +1253,27 @@ void glGetFixed(const GL_GET_ENUM param, int* f) {
 	int i;
 	switch (param) {
 		case GL_GET_MATRIX_VECTOR:
-			while(GFX_BUSY); // wait until the graphics engine has stopped to read matrixes
-			for(i = 0; i < 9; i++) f[i] = MATRIX_READ_VECTOR[i];
+			while (GFX_BUSY); // wait until the graphics engine has stopped to read matrixes
+			for (i = 0; i < 9; i++) f[i] = MATRIX_READ_VECTOR[i];
 			break;
 		case GL_GET_MATRIX_CLIP:
-			while(GFX_BUSY); // wait until the graphics engine has stopped to read matrixes
-			for(i = 0; i < 16; i++) f[i] = MATRIX_READ_CLIP[i];
+			while (GFX_BUSY); // wait until the graphics engine has stopped to read matrixes
+			for (i = 0; i < 16; i++) f[i] = MATRIX_READ_CLIP[i];
 			break;
 		case GL_GET_MATRIX_PROJECTION:
 			glMatrixMode(GL_POSITION);
 			glPushMatrix(); // save the current state of the position matrix
 			glLoadIdentity(); // load an identity matrix into the position matrix so that the clip matrix = projection matrix
-			while(GFX_BUSY); // wait until the graphics engine has stopped to read matrixes
-			for(i = 0; i < 16; i++) f[i] = MATRIX_READ_CLIP[i]; // read out the projection matrix
+			while (GFX_BUSY); // wait until the graphics engine has stopped to read matrixes
+			for (i = 0; i < 16; i++) f[i] = MATRIX_READ_CLIP[i]; // read out the projection matrix
 			glPopMatrix(1); // restore the position matrix
 			break;
 		case GL_GET_MATRIX_POSITION:
 			glMatrixMode(GL_PROJECTION);
 			glPushMatrix(); // save the current state of the projection matrix
 			glLoadIdentity(); // load a identity matrix into the projection matrix so that the clip matrix = position matrix
-			while(GFX_BUSY); // wait until the graphics engine has stopped to read matrixes
-			for(i = 0; i < 16; i++) f[i] = MATRIX_READ_CLIP[i]; // read out the position matrix
+			while (GFX_BUSY); // wait until the graphics engine has stopped to read matrixes
+			for (i = 0; i < 16; i++) f[i] = MATRIX_READ_CLIP[i]; // read out the position matrix
 			glPopMatrix(1); // restore the projection matrix
 			break;
 		default:
@@ -1340,12 +1340,12 @@ void glGetInt(GL_GET_ENUM param, int* i) {
 			break;
 		case GL_GET_TEXTURE_WIDTH: {
 			gl_texture_data *tex = (gl_texture_data*)DynamicArrayGet( &glGlob->texturePtrs, glGlob->activeTexture );
-			if( tex )
+			if (tex )
 				*i = 8 << ((tex->texFormat >> 20 ) & 7 );
 			break; }
 		case GL_GET_TEXTURE_HEIGHT: {
 			gl_texture_data *tex = (gl_texture_data*)DynamicArrayGet( &glGlob->texturePtrs, glGlob->activeTexture );
-			if( tex )
+			if (tex )
 				*i = 8 << ((tex->texFormat >> 23 ) & 7 );
 			break; }
 		default:
@@ -1544,7 +1544,7 @@ GL_STATIC_INL
 \param t T(a.k.a. V) texture coordinate (0.0 - 1.0)*/
  void glTexCoord2f(float s, float t) {
 	gl_texture_data *tex = (gl_texture_data*)DynamicArrayGet( &glGlob->texturePtrs, glGlob->activeTexture );
-	if( tex ) {
+	if (tex) {
 		int x = (tex->texFormat >> 20) & 7;
 		int y = (tex->texFormat >> 23) & 7;
 		glTexCoord2t16(floattot16(s*(8 << x)), floattot16(t*(8<<y)));

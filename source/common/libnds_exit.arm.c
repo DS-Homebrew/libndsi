@@ -26,5 +26,5 @@ void __libndsi_exit(int rc) {
 		systemShutDown();
 	}
 	
-	while(1);
+	while (1);
 }

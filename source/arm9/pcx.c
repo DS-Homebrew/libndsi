@@ -53,7 +53,7 @@ int loadPCX(const unsigned char* pcx, sImage* image) {
 
 	size = image->width * image->height;
 
-	if(hdr->bitsPerPixel != 8)
+	if (hdr->bitsPerPixel != 8)
 		return 0;
 	
 	scanline = image->image.data8 = (unsigned char*)malloc(size);
@@ -61,20 +61,20 @@ int loadPCX(const unsigned char* pcx, sImage* image) {
 
 	count = 0;
 
-	for(iy = 0; iy < height; iy++) {
+	for (iy = 0; iy < height; iy++) {
 		count = 0;
-		while(count < scansize)
+		while (count < scansize)
 		{
 			c = *pcx++;
 			
-			if(c < 192) {
+			if (c < 192) {
 				scanline[count++] = c;
 			} else {
 				run = c - 192;
 			
 				c = *pcx++;
 				
-				for(i = 0; i < run && count < scansize; i++)
+				for (i = 0; i < run && count < scansize; i++)
 					scanline[count++] = c;
 			}
 		}
@@ -84,7 +84,7 @@ int loadPCX(const unsigned char* pcx, sImage* image) {
 	//check for the palette marker.
 	//I have seen PCX files without this, but the docs don't seem ambiguous--it must be here.
 	//Anyway, the support among other apps is poor, so we're going to reject it.
-	if(*pcx != 0x0C)
+	if (*pcx != 0x0C)
 	{
 		free(image->image.data8);
 		image->image.data8 = 0;
@@ -99,7 +99,7 @@ int loadPCX(const unsigned char* pcx, sImage* image) {
 
 	image->bpp = 8;
 
-	for(i = 0; i < 256; i++)
+	for (i = 0; i < 256; i++)
 	{
 		u8 r = (pal[i].r + 4 > 255) ? 255 : (pal[i].r + 4);
 		u8 g = (pal[i].g + 4 > 255) ? 255 : (pal[i].g + 4);

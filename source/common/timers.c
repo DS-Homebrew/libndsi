@@ -31,12 +31,12 @@
 
 #include <nds/arm9/sassert.h>
 //---------------------------------------------------------------------------------
-void timerStart(int timer, ClockDivider divider, u16 ticks, VoidFn callback){
+void timerStart(int timer, ClockDivider divider, u16 ticks, VoidFn callback) {
 //---------------------------------------------------------------------------------
 	sassert(timer < 4, "timer must be in range 0 - 3");
 	TIMER_DATA(timer) = ticks;
 
-	if(callback) {
+	if (callback) {
 		irqSet(IRQ_TIMER(timer), callback);
 		irqEnable(IRQ_TIMER(timer));
 		TIMER_CR(timer) = TIMER_IRQ_REQ | divider | TIMER_ENABLE;
@@ -57,7 +57,7 @@ u16 timerElapsed(int timer) {
 	s32 result = (s32)time - (s32)elapsed[timer];
 
 	//overflow...this will only be accurate if it has overflowed no more than once.
-	if(result < 0) {
+	if (result < 0) {
 		result = time + (0x10000 - elapsed[timer]);
 	}
 

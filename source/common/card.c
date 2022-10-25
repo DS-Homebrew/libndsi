@@ -110,9 +110,9 @@ void cardReadHeader(u8 *header) {
 	swiDelay(167550);
 	REG_AUXSPICNTH=CARD_CR1_ENABLE|CARD_CR1_IRQ;
 	REG_ROMCTRL=CARD_nRESET|CARD_SEC_SEED;
-	while(REG_ROMCTRL&CARD_BUSY) ;
+	while (REG_ROMCTRL&CARD_BUSY) ;
 	cardReset();
-	while(REG_ROMCTRL&CARD_BUSY) ;
+	while (REG_ROMCTRL&CARD_BUSY) ;
 	
 	cardParamCommand(CARD_CMD_HEADER_READ,0,CARD_ACTIVATE|CARD_nRESET|CARD_CLK_SLOW|CARD_BLK_SIZE(1)|CARD_DELAY1(0x1FFF)|CARD_DELAY2(0x3F),(u32*)header,512/4);
 }
@@ -135,14 +135,14 @@ void cardReset() {
 	u32 read=0;
 
 	do {
-		if(REG_ROMCTRL&CARD_DATA_READY) {
-			if(read<0x2000) {
+		if (REG_ROMCTRL&CARD_DATA_READY) {
+			if (read<0x2000) {
 				u32 data=REG_CARD_DATA_RD;
 				(void)data;
 				read+=4;
 			}
 		}
-	} while(REG_ROMCTRL&CARD_BUSY);
+	} while (REG_ROMCTRL&CARD_BUSY);
 }
 
 
