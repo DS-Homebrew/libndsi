@@ -220,8 +220,6 @@ int keyboardUpdate(void) {
 			}
 			if (curKeyboard->OnKeyReleased) curKeyboard->OnKeyReleased(lastKey);
 		}
-
-		return -1;
 	} else {
 		if (keys & KEY_TOUCH) {
 			touchRead(&touch);

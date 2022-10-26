@@ -224,7 +224,6 @@ void cardWriteEeprom(uint32 address, uint8 *data, uint32 length, uint32 addrtype
 //---------------------------------------------------------------------------------
 
 	uint32 address_end = address + length;
-	int i;
 	int maxblocks = 32;
 	if (addrtype == 1) maxblocks = 16;
 	//if (addrtype == 2) maxblocks = 32; - Already defined above
@@ -245,16 +244,14 @@ void cardWriteEeprom(uint32 address, uint8 *data, uint32 length, uint32 addrtype
 			eepromWaitBusy();
 			REG_AUXSPIDATA = address & 0xFF;
 			eepromWaitBusy();
-		}
-		else if (addrtype == 2) {
+		} else if (addrtype == 2) {
 			REG_AUXSPIDATA = 0x02;
 			eepromWaitBusy();
 			REG_AUXSPIDATA = address >> 8;
 			eepromWaitBusy();
 			REG_AUXSPIDATA = address & 0xFF;
 			eepromWaitBusy();
-		}
-		else if (addrtype == 3) {
+		} else if (addrtype == 3) {
 			REG_AUXSPIDATA = 0x02;
 			eepromWaitBusy();
 			REG_AUXSPIDATA = (address >> 16) & 0xFF;
@@ -265,7 +262,7 @@ void cardWriteEeprom(uint32 address, uint8 *data, uint32 length, uint32 addrtype
 			eepromWaitBusy();
 		}
 
-		for (i=0; address<address_end && i<maxblocks; i++, address++) {
+		for (int i = 0; address<address_end && i<maxblocks; i++, address++) {
 			REG_AUXSPIDATA = *data++;
 			eepromWaitBusy();
 		}
@@ -285,10 +282,9 @@ void cardWriteEeprom(uint32 address, uint8 *data, uint32 length, uint32 addrtype
 //---------------------------------------------------------------------------------
 void cardEepromChipErase(void) {
 //---------------------------------------------------------------------------------
-	int sz, sector;
-	sz=cardEepromGetSize();
+	int sz = cardEepromGetSize();
 
-	for (sector = 0; sector < sz; sector+=0x10000) {
+	for (int sector = 0; sector < sz; sector+=0x10000) {
 		cardEepromSectorErase(sector);
 	}
 }
@@ -298,34 +294,34 @@ void cardEepromChipErase(void) {
 //---------------------------------------------------------------------------------
 void cardEepromSectorErase(uint32 address) {
 //---------------------------------------------------------------------------------
-		// set WEL (Write Enable Latch)
-		REG_AUXSPICNT = /*E*/0x8000 | /*SEL*/0x2000 | /*MODE*/0x40;
-		REG_AUXSPIDATA = 0x06;
-		eepromWaitBusy();
+	// set WEL (Write Enable Latch)
+	REG_AUXSPICNT = /*E*/0x8000 | /*SEL*/0x2000 | /*MODE*/0x40;
+	REG_AUXSPIDATA = 0x06;
+	eepromWaitBusy();
 
-		REG_AUXSPICNT = /*MODE*/0x40;
+	REG_AUXSPICNT = /*MODE*/0x40;
 
-		// SectorErase 0xD8
-		REG_AUXSPICNT = /*E*/0x8000 | /*SEL*/0x2000 | /*MODE*/0x40;
-		REG_AUXSPIDATA = 0xD8;
-		eepromWaitBusy();
-		REG_AUXSPIDATA = (address >> 16) & 0xFF;
-		eepromWaitBusy();
-		REG_AUXSPIDATA = (address >> 8) & 0xFF;
-		eepromWaitBusy();
-		REG_AUXSPIDATA = address & 0xFF;
-		eepromWaitBusy();
+	// SectorErase 0xD8
+	REG_AUXSPICNT = /*E*/0x8000 | /*SEL*/0x2000 | /*MODE*/0x40;
+	REG_AUXSPIDATA = 0xD8;
+	eepromWaitBusy();
+	REG_AUXSPIDATA = (address >> 16) & 0xFF;
+	eepromWaitBusy();
+	REG_AUXSPIDATA = (address >> 8) & 0xFF;
+	eepromWaitBusy();
+	REG_AUXSPIDATA = address & 0xFF;
+	eepromWaitBusy();
 
-		REG_AUXSPICNT = /*MODE*/0x40;
+	REG_AUXSPICNT = /*MODE*/0x40;
 
-		// wait erase to finish
-		REG_AUXSPICNT = /*E*/0x8000 | /*SEL*/0x2000 | /*MODE*/0x40;
-		REG_AUXSPIDATA = 0x05;
+	// wait erase to finish
+	REG_AUXSPICNT = /*E*/0x8000 | /*SEL*/0x2000 | /*MODE*/0x40;
+	REG_AUXSPIDATA = 0x05;
+	eepromWaitBusy();
+
+	do {
+		REG_AUXSPIDATA = 0;
 		eepromWaitBusy();
-
-		do {
-			REG_AUXSPIDATA = 0;
-			eepromWaitBusy();
-		} while (REG_AUXSPIDATA & 0x01);  // WIP (Write In Progress) ?
-		REG_AUXSPICNT = /*MODE*/0x40;
+	} while (REG_AUXSPIDATA & 0x01);  // WIP (Write In Progress) ?
+	REG_AUXSPICNT = /*MODE*/0x40;
 }

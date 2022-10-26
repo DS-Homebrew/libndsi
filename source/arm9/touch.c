@@ -35,7 +35,7 @@
 void touchRead(touchPosition *data) {
 //---------------------------------------------------------------------------------
 
-	if (!data ) return;
+	if (!data) return;
 
 	data->rawx = __transferRegion()->touchX;
 	data->rawy = __transferRegion()->touchY;

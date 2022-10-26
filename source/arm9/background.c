@@ -99,26 +99,21 @@ bool checkIfText(int id) {
 	if (!mode) return true;
 
 	if (mode == 1 || mode == 3) {
-		return id == 3 || id == 7 ? false : true;
+		return !(id == 3 || id == 7);
 	}
 
 	return false;
 }
 
 void bgUpdate(void) {
-
 	int i = 0;
 
-	for (i = 0; i < 8; i++)
-	{
+	for (i = 0; i < 8; i++) {
 		if (!bgState[i].dirty) continue;
 
-		if (bgIsTextLut[i])
-		{
-
+		if (bgIsTextLut[i]) {
 			bgScrollTable[i]->x = bgState[i].scrollX >> 8;
 			bgScrollTable[i]->y = bgState[i].scrollY >> 8;
-
 		} else {
 			s16 angleSin;
 			s16 angleCos;

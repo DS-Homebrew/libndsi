@@ -526,15 +526,15 @@ void glInit_C(void) {
 
 	glGlob = glGetGlobals();
 
-	if (glGlob->isActive )
+	if (glGlob->isActive)
 		return;
 
 	// Allocate the designated layout for each memory block
-	glGlob->vramBlocks[ 0 ] = vramBlock_Construct( (uint8*)VRAM_A, (uint8*)VRAM_E );
-	glGlob->vramBlocks[ 1 ] = vramBlock_Construct( (uint8*)VRAM_E, (uint8*)VRAM_H );
+	glGlob->vramBlocks[0] = vramBlock_Construct( (uint8*)VRAM_A, (uint8*)VRAM_E );
+	glGlob->vramBlocks[1] = vramBlock_Construct( (uint8*)VRAM_E, (uint8*)VRAM_H );
 
-	glGlob->vramLock[ 0 ] = 0;
-	glGlob->vramLock[ 1 ] = 0;
+	glGlob->vramLock[0] = 0;
+	glGlob->vramLock[1] = 0;
 
 	// init texture globals
 
