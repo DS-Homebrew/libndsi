@@ -50,7 +50,7 @@ void touchRead(touchPosition *data) {
 //---------------------------------------------------------------------------------
 touchPosition touchReadXY() {
 //---------------------------------------------------------------------------------
-	
+
 	touchPosition touchPos;
 
 	touchRead(&touchPos);

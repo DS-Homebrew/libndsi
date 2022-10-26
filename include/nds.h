@@ -122,7 +122,7 @@
 	\example Graphics/Backgrounds/256_color_bmp/source/main.cpp
 	\example Graphics/Backgrounds/Double_Buffer/source/main.cpp
 	\example Graphics/Backgrounds/rotation/source/main.cpp
-	
+
     <!-- sprites -->
     \example Graphics/Sprites/allocation_test/source/main.c
 	\example Graphics/Sprites/animate_simple/source/template.c
@@ -131,7 +131,7 @@
 	\example Graphics/Sprites/simple/source/template.c
 	\example Graphics/Sprites/sprite_extended_palettes/source/template.c
 	\example Graphics/Sprites/sprite_rotate/source/template.c
-	
+
 	<!-- Graphics Effects -->
 	\example Graphics/Effects/windows/source/template.c
 
@@ -167,17 +167,17 @@
 	\example Graphics/3D/Picking/source/main.cpp
 	\example Graphics/3D/Simple_Quad/source/main.cpp
 	\example Graphics/3D/Simple_Tri/source/main.cpp
-	\example Graphics/3D/Textured_Cube/source/main.cpp	
+	\example Graphics/3D/Textured_Cube/source/main.cpp
 	\example Graphics/3D/Textured_Quad/source/main.cpp
-	\example Graphics/3D/Toon_Shading/source/main.cpp	
-	
+	\example Graphics/3D/Toon_Shading/source/main.cpp
+
 	<!-- RTC -->
 	\example time/RealTimeClock/source/main.c
-	
+
 	<!-- Timers -->
 	\example time/stopwatch/source/main.c
 	\example time/timercallback/source/main.c
-	
+
 
 	<!-- capture -->
 	\example capture/ScreenShot/source/main.cpp

@@ -68,8 +68,8 @@ int soundPlayNoise(u16 freq, u8 volume, u8 pan) {
 	return (int)fifoGetValue32(FIFO_SOUND);
 }
 
-int soundPlaySample(const void* data, SoundFormat format, u32 dataSize, u16 freq, u8 volume, u8 pan, bool loop, u16 loopPoint) { 
-	
+int soundPlaySample(const void* data, SoundFormat format, u32 dataSize, u16 freq, u8 volume, u8 pan, bool loop, u16 loopPoint) {
+
 	FifoMessage msg;
 
 	msg.type = SOUND_PLAY_MESSAGE;
@@ -123,7 +123,7 @@ void micBufferHandler(int bytes, void* user_data) {
 	FifoMessage msg;
 
 	fifoGetDatamsg(FIFO_SOUND, bytes, (u8*)&msg);
-	
+
 	if (msg.type == MIC_BUFFER_FULL_MESSAGE) {
 
 		if (micCallback) micCallback(msg.MicBufferFull.buffer, msg.MicBufferFull.length);

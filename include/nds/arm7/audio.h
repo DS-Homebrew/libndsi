@@ -117,7 +117,7 @@ typedef void (*MIC_BUF_SWAP_CB)(u8* completedBuffer, int length);
 
 /*---------------------------------------------------------------------------------
 	microphone code based on neimod's microphone example.
-	See: http://neimod.com/dstek/ 
+	See: http://neimod.com/dstek/
 	Chris Double (chris.double@double.co.nz)
 	http://www.double.co.nz/nintendo_ds
 ---------------------------------------------------------------------------------*/
@@ -132,7 +132,7 @@ u16 micReadData12();
 /*---------------------------------------------------------------------------------
 	Fill the buffer with data from the microphone. The buffer will be
 	signed sound data at 16kHz. Once the length of the buffer is
-	reached, no more data will be stored. Uses ARM7 timer 0.  
+	reached, no more data will be stored. Uses ARM7 timer 0.
 ---------------------------------------------------------------------------------*/
 void micStartRecording(u8* buffer, int length, int freq, int timer, bool eightBitSample, MIC_BUF_SWAP_CB bufferSwapCallback);
 
@@ -147,7 +147,7 @@ void micTimerHandler(void);
 void micSetAmp(u8 control, u8 gain);
 
 //---------------------------------------------------------------------------------
-// Turn the microphone on 
+// Turn the microphone on
 //---------------------------------------------------------------------------------
 static inline void micOn(void) {
 //---------------------------------------------------------------------------------
@@ -156,7 +156,7 @@ static inline void micOn(void) {
 
 
 //---------------------------------------------------------------------------------
-// Turn the microphone off 
+// Turn the microphone off
 //---------------------------------------------------------------------------------
 static inline void micOff(void) {
 //---------------------------------------------------------------------------------

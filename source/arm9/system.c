@@ -84,7 +84,7 @@ void systemMsgHandler(int bytes, void* user_data) {
 void systemSleep(void) {
 //---------------------------------------------------------------------------------
    fifoSendValue32(FIFO_PM, PM_REQ_SLEEP);
-  
+
    //100ms
    swiDelay(419000);
 }

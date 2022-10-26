@@ -92,7 +92,7 @@ static int simpleAlloc(OamState *oam, int size)
 			misalignment = size - misalignment;
 
 		if (curOffset >= 1024)
-		{ 
+		{
 			return -1;
 		}
 
@@ -117,7 +117,7 @@ static int simpleAlloc(OamState *oam, int size)
 		next = curOffset;
 
 		AH(next)->size = tempSize - misalignment;
-		AH(next)->nextFree = tempNextFree; 
+		AH(next)->nextFree = tempNextFree;
 	}
 
 	//is the block the first free block
@@ -190,7 +190,7 @@ static void simpleFree(OamState *oam, int index)
 
 
 	//check if the next free block and current can be appended
-	// [curOffset]         [index]          [next->nextFree] 
+	// [curOffset]         [index]          [next->nextFree]
 	//    next      | ~ |  current    | ~ |     nextFree
 
 	//check if current abuts nextFree
@@ -206,7 +206,7 @@ static void simpleFree(OamState *oam, int index)
 	if (curOffset + AH(next)->size == index)
 	{
 		AH(next)->size += AH(current)->size;
-		AH(next)->nextFree = AH(current)->nextFree;   
+		AH(next)->nextFree = AH(current)->nextFree;
 	} else {
 		AH(next)->nextFree = index;
 	}
@@ -217,7 +217,7 @@ static void simpleFree(OamState *oam, int index)
 u16* oamAllocateGfx(OamState *oam, SpriteSize size, SpriteColorFormat colorFormat)
 {
 	int bytes = SPRITE_SIZE_PIXELS(size);
-    
+
 	if (colorFormat == SpriteColorFormat_16Color)
 		bytes = bytes >> 1;
 	else if (colorFormat == SpriteColorFormat_Bmp)

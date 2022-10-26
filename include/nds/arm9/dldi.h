@@ -2,7 +2,7 @@
  dldi.h
 
  Copyright (c) 2006 Michael "Chishm" Chisholm
-	
+
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
 
@@ -55,7 +55,7 @@ typedef struct DLDI_INTERFACE {
 	u8		allocatedSize;		// log-2 of the allocated space in bytes
 
 	char	friendlyName [DLDI_FRIENDLY_NAME_LEN];
-	
+
 	// Pointers to sections that need address fixing
 	void*	dldiStart;
 	void*	dldiEnd;
@@ -65,7 +65,7 @@ typedef struct DLDI_INTERFACE {
 	void*	gotEnd;
 	void*	bssStart;
 	void*	bssEnd;
-	
+
 	// Original I/O interface data
 	DISC_INTERFACE ioInterface;
 } DLDI_INTERFACE;
@@ -78,7 +78,7 @@ You'll need to set the bus permissions appropriately before using.
 extern const DLDI_INTERFACE* io_dldi_data;
 
 /*
-Return a pointer to the internal IO interface, 
+Return a pointer to the internal IO interface,
 setting up bus permissions in the process.
 */
 extern const DISC_INTERFACE* dldiGetInternal (void);
@@ -88,7 +88,7 @@ Determines if an IO driver is a valid DLDI driver
 */
 extern bool dldiIsValid (const DLDI_INTERFACE* io);
 
-/* 
+/*
 Adjust the pointer addresses within a DLDI driver
 */
 extern void dldiFixDriverAddresses (DLDI_INTERFACE* io);
@@ -104,8 +104,8 @@ fatMount(&loadedDldi->ioInterface, "devname", 0);
 */
 extern DLDI_INTERFACE* dldiLoadFromFile (const char* path);
 
-/* 
-Free resources used by a loaded DLDI. 
+/*
+Free resources used by a loaded DLDI.
 Remember to unmount and shutdown first:
 fatUnmount("devname");
 loadedDldi->ioInterface.shutdown();

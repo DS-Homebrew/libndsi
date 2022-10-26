@@ -186,13 +186,13 @@ void micStartRecording(u8* buffer, int length, int freq, int timer, bool eightBi
   irqEnable(BIT(3 + timer));
 
   // Setup a timer
-  TIMER_DATA(timer) = TIMER_FREQ(freq); 
+  TIMER_DATA(timer) = TIMER_FREQ(freq);
   TIMER_CR(timer) = TIMER_ENABLE |TIMER_IRQ_REQ;
   //irqSet(IRQ_TIMER2, micTimerHandler);
   //irqEnable(IRQ_TIMER2);
 
   //// Setup a timer
-  //TIMER_DATA(2) = TIMER_FREQ(freq); 
+  //TIMER_DATA(2) = TIMER_FREQ(freq);
   //TIMER_CR(2) = TIMER_ENABLE | TIMER_DIV_1 | TIMER_IRQ_REQ;
 }
 
@@ -217,7 +217,7 @@ void micTimerHandler(void) {
 	// Read data from the microphone. Data from the Mic is unsigned, flipping
     // the highest bit makes it signed.
 
-	
+
 
     if (eightBit) {
     	*(microphone_back_buffer+sampleCount) = micReadData8() ^ 0x80;
@@ -239,5 +239,5 @@ void micTimerHandler(void) {
 		if (swapCallback)
 			swapCallback(microphone_front_buffer, microphone_buffer_length);
 	}
-	
+
 }

@@ -45,13 +45,13 @@ bool sdio_ReadSectors(sec_t sector, sec_t numSectors,void* buffer) {
 	msg.sdParams.startsector = sector;
 	msg.sdParams.numsectors = numSectors;
 	msg.sdParams.buffer = buffer;
-	
+
 	fifoSendDatamsg(FIFO_SDMMC, sizeof(msg), (u8*)&msg);
 
 	fifoWaitValue32(FIFO_SDMMC);
 
 	int result = fifoGetValue32(FIFO_SDMMC);
-	
+
 	return result == 0;
 }
 
@@ -66,13 +66,13 @@ bool sdio_WriteSectors(sec_t sector, sec_t numSectors,const void* buffer) {
 	msg.sdParams.startsector = sector;
 	msg.sdParams.numsectors = numSectors;
 	msg.sdParams.buffer = (void*)buffer;
-	
+
 	fifoSendDatamsg(FIFO_SDMMC, sizeof(msg), (u8*)&msg);
 
 	fifoWaitValue32(FIFO_SDMMC);
 
 	int result = fifoGetValue32(FIFO_SDMMC);
-	
+
 	return result == 0;
 }
 

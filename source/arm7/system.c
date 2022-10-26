@@ -78,7 +78,7 @@ void powerValueHandler(u32 value, void* user_data) {
 		break;
 
 	case PM_REQ_SLEEP:
-			
+
 		ie_save = REG_IE;
 		// Turn the speaker down.
 		if (REG_POWERCNT & 1) swiChangeSoundBias(0,0x400);
@@ -94,7 +94,7 @@ void powerValueHandler(u32 value, void* user_data) {
 
 		//100ms
 		swiDelay(838000);
-		
+
 		// Restore the interrupt state.
 		REG_IE = ie_save;
 
@@ -102,7 +102,7 @@ void powerValueHandler(u32 value, void* user_data) {
 		writePowerManagement(PM_CONTROL_REG, power);
 
 		// Turn the speaker up.
-		if (REG_POWERCNT & 1) swiChangeSoundBias(1,0x400); 
+		if (REG_POWERCNT & 1) swiChangeSoundBias(1,0x400);
 
 		// update clock tracking
 		resyncClock();
@@ -162,7 +162,7 @@ void installSystemFIFO(void) {
 		fifoSetDatamsgHandler(FIFO_SDMMC, sdmmcMsgHandler, 0);
 	}
 	fifoSetDatamsgHandler(FIFO_FIRMWARE, firmwareMsgHandler, 0);
-	
+
 }
 
 

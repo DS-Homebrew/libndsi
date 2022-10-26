@@ -5,7 +5,7 @@
  Based on code originally written by MightyMax
 
  Copyright (c) 2006 Michael "Chishm" Chisholm
-	
+
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
 
@@ -37,9 +37,9 @@
 #include <unistd.h>
 #include <sys/fcntl.h>
 
-const u32  DLDI_MAGIC_NUMBER = 
-	0xBF8DA5ED;	
-	
+const u32  DLDI_MAGIC_NUMBER =
+	0xBF8DA5ED;
+
 // Stored backwards to prevent it being picked up by DLDI patchers
 const char DLDI_MAGIC_STRING_BACKWARDS [DLDI_MAGIC_STRING_LEN] =
 	{'\0', 'm', 'h', 's', 'i', 'h', 'C', ' '} ;
@@ -63,17 +63,17 @@ const DISC_INTERFACE* dldiGetInternal (void) {
 
 bool dldiIsValid (const DLDI_INTERFACE* io) {
 	int i;
-	
+
 	if (io->magicNumber != DLDI_MAGIC_NUMBER) {
 		return false;
 	}
-	
+
 	for (i = 0; i < DLDI_MAGIC_STRING_LEN; i++) {
 		if (io->magicString[i] != DLDI_MAGIC_STRING_BACKWARDS [DLDI_MAGIC_STRING_LEN - 1 - i]) {
 			return false;
 		}
 	}
-	
+
 	return true;
 }
 
@@ -82,12 +82,12 @@ void dldiFixDriverAddresses (DLDI_INTERFACE* io) {
 	u8** address;
 	u8* oldStart;
 	u8* oldEnd;
-	
+
 	offset = (char*)io - (char*)(io->dldiStart);
 
 	oldStart = io->dldiStart;
 	oldEnd = io->dldiEnd;
-	
+
 	// Correct all pointers to the offsets from the location of this interface
 	io->dldiStart 		= (char*)io->dldiStart + offset;
 	io->dldiEnd 		= (char*)io->dldiEnd + offset;
@@ -97,7 +97,7 @@ void dldiFixDriverAddresses (DLDI_INTERFACE* io) {
 	io->gotEnd 			= (char*)io->gotEnd + offset;
 	io->bssStart 		= (char*)io->bssStart + offset;
 	io->bssEnd 			= (char*)io->bssEnd + offset;
-	
+
 	io->ioInterface.startup 		= (FN_MEDIUM_STARTUP)		((intptr_t)io->ioInterface.startup + offset);
 	io->ioInterface.isInserted 		= (FN_MEDIUM_ISINSERTED)	((intptr_t)io->ioInterface.isInserted + offset);
 	io->ioInterface.readSectors 	= (FN_MEDIUM_READSECTORS)	((intptr_t)io->ioInterface.readSectors + offset);
@@ -113,7 +113,7 @@ void dldiFixDriverAddresses (DLDI_INTERFACE* io) {
 			}
 		}
 	}
-	
+
 	// Fix the interworking glue section
 	if (io->fixSectionsFlags & FIX_GLUE) {
 		for (address = (u8**)io->interworkStart; address < (u8**)io->interworkEnd; address++) {
@@ -122,7 +122,7 @@ void dldiFixDriverAddresses (DLDI_INTERFACE* io) {
 			}
 		}
 	}
-	
+
 	// Fix the global offset table section
 	if (io->fixSectionsFlags & FIX_GOT) {
 		for (address = (u8**)io->gotStart; address < (u8**)io->gotEnd; address++) {
@@ -131,7 +131,7 @@ void dldiFixDriverAddresses (DLDI_INTERFACE* io) {
 			}
 		}
 	}
-	
+
 	// Initialise the BSS to 0
 	if (io->fixSectionsFlags & FIX_BSS) {
 		memset (io->bssStart, 0, (u8*)io->bssEnd - (u8*)io->bssStart);
@@ -147,25 +147,25 @@ DLDI_INTERFACE* dldiLoadFromFile (const char* path) {
 	if ((fd = open (path, O_RDONLY, 0)) < 0) {
 		return NULL;
 	}
-	
+
 	if ((device = malloc (sizeof(DLDI_INTERFACE))) == NULL) {
 		close (fd);
 		return NULL;
 	}
-	
+
 	if (read (fd, device, sizeof(DLDI_INTERFACE)) < sizeof(DLDI_INTERFACE)) {
 		free (device);
 		close (fd);
 		return NULL;
 	}
-	
+
 	// Check that it is a valid DLDI
 	if (!dldiIsValid (device)) {
 		free (device);
 		close (fd);
 		return NULL;
 	}
-	
+
 	// Calculate actual size of DLDI
 	// Although the file may only go to the dldiEnd, the BSS section can extend past that
 	if (device->dldiEnd > device->bssEnd) {
@@ -181,12 +181,12 @@ DLDI_INTERFACE* dldiLoadFromFile (const char* path) {
 		close (fd);
 		return NULL;
 	}
-	
+
 	memset (device, 0, dldiSize);
 	lseek (fd, 0, SEEK_SET);
 	read (fd, device, dldiSize);
 	close (fd);
-	
+
 	dldiFixDriverAddresses (device);
 
 	if (device->ioInterface.features & FEATURE_SLOT_GBA) {
@@ -195,7 +195,7 @@ DLDI_INTERFACE* dldiLoadFromFile (const char* path) {
 	if (device->ioInterface.features & FEATURE_SLOT_NDS) {
 		sysSetCardOwner(BUS_OWNER_ARM9);
 	}
-	
+
 	return device;
 }
 

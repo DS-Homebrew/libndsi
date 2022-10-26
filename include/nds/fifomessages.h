@@ -86,7 +86,7 @@ typedef struct FifoMessage {
 			touchPosition touch;
 			u16 keys;
 		} SystemInput;
-		
+
 		struct{
 			void *buffer;
 			u32 startsector;

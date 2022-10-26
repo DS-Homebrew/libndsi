@@ -75,12 +75,12 @@ int cardEepromGetType(void) {
 //---------------------------------------------------------------------------------
 	int sr = cardEepromCommand(SPI_EEPROM_RDSR);
 	int id = cardEepromReadID();
-	
+
 	if (( sr == 0xff && id == 0xffffff) || ( sr == 0 && id == 0 )) return -1;
 	if (sr == 0xf0 && id == 0xffffff ) return 1;
 	if (sr == 0x00 && id == 0xffffff ) return 2;
 	if (id != 0xffffff || ( sr == 0x02 && id == 0xffffff )) return 3;
-	
+
 	return 0;
 }
 
@@ -136,9 +136,9 @@ uint32 cardEepromGetSize() {
 		int id = cardEepromReadID();
 
 		device = id & 0xffff;
-		
+
 		if (((id >> 16) & 0xff) == 0x20) { // ST
-			
+
 			switch (device) {
 
 			case 0x4014:
@@ -155,14 +155,14 @@ uint32 cardEepromGetSize() {
 		}
 
 		if (((id >> 16) & 0xff) == 0x62) { // Sanyo
-			
+
 			if (device == 0x1100)
 				return 512*1024;		//	4Mbit(512KByte)
 
 		}
 
 		if (((id >> 16) & 0xff) == 0xC2) { // Macronix
-			
+
 			switch (device) {
 
 			case 0x2211:
@@ -180,7 +180,7 @@ uint32 cardEepromGetSize() {
 				return 128*1024; // 1Mbit (128KByte)
 			}
 		}
-		
+
 
 		return 256*1024;		//	2Mbit(256KByte)
 	}
@@ -200,8 +200,8 @@ void cardReadEeprom(u32 address, u8 *data, u32 length, u32 addrtype) {
 	if (addrtype == 3) {
 		REG_AUXSPIDATA = (address >> 16) & 0xFF;
 		eepromWaitBusy();
-	} 
-	
+	}
+
 	if (addrtype >= 2) {
 		REG_AUXSPIDATA = (address >> 8) & 0xFF;
 		eepromWaitBusy();
@@ -269,9 +269,9 @@ void cardWriteEeprom(uint32 address, uint8 *data, uint32 length, uint32 addrtype
 			eepromWaitBusy();
 		}
 
-		for (i=0; address<address_end && i<maxblocks; i++, address++) { 
-			REG_AUXSPIDATA = *data++; 
-			eepromWaitBusy(); 
+		for (i=0; address<address_end && i<maxblocks; i++, address++) {
+			REG_AUXSPIDATA = *data++;
+			eepromWaitBusy();
 		}
 		REG_AUXSPICNT = /*MODE*/0x40;
 

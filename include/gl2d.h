@@ -30,7 +30,7 @@
 /*! \brief Enums selecting flipping mode.
  *
  *	These enums are bits for flipping the sprites. <Br>
- *	You can <b>"|"</b> (or) GL_FLIP_V and GL_FLIP_H to flip 
+ *	You can <b>"|"</b> (or) GL_FLIP_V and GL_FLIP_H to flip
  *	both ways. <Br><Br>
  *  <ul>
  *	<li> Related functions:
@@ -43,22 +43,22 @@
  * 		<li>glSpriteRotateScaleXY()
  *	 	<li>glSpriteOnQuad()
  * 		</ol>
- * 	</ul>	
+ * 	</ul>
  */
- 
+
 typedef enum
 {
 
 	GL_FLIP_NONE 	= (1 << 0), /*!< No flipping */
 	GL_FLIP_V 		= (1 << 1), /*!< Sprite is rendered vertically flipped */
 	GL_FLIP_H 		= (1 << 2), /*!< Sprite is rendered horizontally flipped */
-	
+
 } GL_FLIP_MODE;
 
 
 /*! \brief Struct for our GL-Based Images<BR>
 This is our struct to hold our image
-	attributes. You don't need to worry about this 
+	attributes. You don't need to worry about this
 	if you use the texture packer. */
 
 /*! \brief Struct for out GL-Based Images.
@@ -76,17 +76,17 @@ This is our struct to hold our image
  * 		<li>glSpriteRotateScaleXY()
  *	 	<li>glSpriteOnQuad()
  * 		</ol>
- * 	</ul>	
+ * 	</ul>
  */
 
-typedef struct 
+typedef struct
 {
 
-	int		width;		/*!< Width of the Sprite */      			
-	int 	height;		/*!< Height of the Sprite */	
+	int		width;		/*!< Width of the Sprite */      
+	int 	height;		/*!< Height of the Sprite */
 	int 	u_off;		/*!< S texture offset */
 	int 	v_off;		/*!< T texture offset */
-	int		textureID;  /*!< Texture handle ( used in glDeleteTextures() ) <Br> 
+	int		textureID;  /*!< Texture handle ( used in glDeleteTextures() ) <Br>
 	  						 The texture handle in VRAM (returned by glGenTextures()) <Br>
 							 ie. This references the actual texture stored in VRAM */
 
@@ -95,7 +95,7 @@ typedef struct
 
 
 #ifdef __cplusplus
-extern "C" 
+extern "C"
 {
 #endif
 
@@ -103,9 +103,9 @@ extern "C"
 extern int gCurrentTexture;
 
 /******************************************************************************
-	
+
 	Function Prototypes
-	
+
 ******************************************************************************/
 
 
@@ -114,19 +114,19 @@ extern int gCurrentTexture;
 void glScreen2D( void );
 
 
-/*! \brief Sets up OpenGL for 2d rendering. <Br> 
+/*! \brief Sets up OpenGL for 2d rendering. <Br>
 	Call this before drawing any of GL2D's drawing or sprite functions.
  */
 void glBegin2D( void );
 
 
-/*! \brief Issue this after drawing 2d so that we don't mess the matrix stack. <Br> 
+/*! \brief Issue this after drawing 2d so that we don't mess the matrix stack. <Br>
 	The compliment of glBegin2D().
  */
 void glEnd2D( void );
 
 
-/*! \brief Returns the active texture. Use with care. <Br> 
+/*! \brief Returns the active texture. Use with care. <Br>
 	Needed to achieve some effects since libnds 1.5.0.
  */
 static inline int glGetActiveTexture()
@@ -136,7 +136,7 @@ static inline int glGetActiveTexture()
 
 
 
-/*! \brief Set the active texture. Use with care. <Br> 
+/*! \brief Set the active texture. Use with care. <Br>
 	Needed to achieve some effects since libnds 1.5.0.
  */
 static inline void glSetActiveTexture( int TextureID )
@@ -144,7 +144,7 @@ static inline void glSetActiveTexture( int TextureID )
 
 	glBindTexture(0, TextureID );
 	gCurrentTexture = TextureID;
-	
+
 }
 
 
@@ -230,7 +230,7 @@ void glTriangleFilledGradient( int x1, int y1, int x2, int y2, int x3, int y3,
 \param x X position of the sprite.
 \param y Y position of the sprite.
 \param flipmode mode for flipping (see GL_FLIP_MODE enum).
-\param *spr pointer to a glImage. 
+\param *spr pointer to a glImage.
 */
 void glSprite( int x, int y, int flipmode, const glImage *spr );
 
@@ -240,7 +240,7 @@ void glSprite( int x, int y, int flipmode, const glImage *spr );
 \param y Y position of the sprite.
 \param scale 20.12 fixed-point scale value (1 << 12 is normal).
 \param flipmode mode for flipping (see GL_FLIP_MODE enum).
-\param *spr pointer to a glImage. 
+\param *spr pointer to a glImage.
 */
 void glSpriteScale( int x, int y, s32 scale, int flipmode, const glImage *spr );
 
@@ -251,7 +251,7 @@ void glSpriteScale( int x, int y, s32 scale, int flipmode, const glImage *spr );
 \param scaleX 20.12 fixed-point X-Axis scale value (1 << 12 is normal).
 \param scaleY 20.12 fixed-point Y-Axis scale value (1 << 12 is normal).
 \param flipmode mode for flipping (see GL_FLIP_MODE enum).
-\param *spr pointer to a glImage. 
+\param *spr pointer to a glImage.
 */
 void glSpriteScaleXY( int x, int y, s32 scaleX, s32 scaleY, int flipmode, const glImage *spr );
 
@@ -261,7 +261,7 @@ void glSpriteScaleXY( int x, int y, s32 scaleX, s32 scaleY, int flipmode, const 
 \param y Y position of the sprite center.
 \param angle Binary Radian Angle(-32768 to 32767) to rotate the sprite.
 \param flipmode mode for flipping (see GL_FLIP_MODE enum).
-\param *spr pointer to a glImage. 
+\param *spr pointer to a glImage.
 */
 void glSpriteRotate( int x, int y, s32 angle, int flipmode, const glImage *spr );
 
@@ -272,7 +272,7 @@ void glSpriteRotate( int x, int y, s32 angle, int flipmode, const glImage *spr )
 \param angle Binary Radian Angle(-32768 to 32767) to rotate the sprite.
 \param scale 20.12 fixed-point scale value (1 << 12 is normal).
 \param flipmode mode for flipping (see GL_FLIP_MODE enum).
-\param *spr pointer to a glImage. 
+\param *spr pointer to a glImage.
 */
 void glSpriteRotateScale( int x, int y, s32 angle, s32 scale, int flipmode, const glImage *spr);
 
@@ -284,7 +284,7 @@ void glSpriteRotateScale( int x, int y, s32 angle, s32 scale, int flipmode, cons
 \param scaleX 20.12 fixed-point X-Axis scale value (1 << 12 is normal).
 \param scaleY 20.12 fixed-point Y-Axis scale value (1 << 12 is normal).
 \param flipmode mode for flipping (see GL_FLIP_MODE enum).
-\param *spr pointer to a glImage. 
+\param *spr pointer to a glImage.
 */
 void glSpriteRotateScaleXY( int x, int y, s32 angle, s32 scaleX, s32 scaleY, int flipmode, const glImage *spr);
 
@@ -294,7 +294,7 @@ void glSpriteRotateScaleXY( int x, int y, s32 angle, s32 scaleX, s32 scaleY, int
 \param x X position of the sprite center.
 \param y Y position of the sprite center.
 \param length_x The length(in pixels) to stretch the sprite.
-\param *spr pointer to a glImage. 
+\param *spr pointer to a glImage.
 */
 void glSpriteStretchHorizontal(int x, int y, int length_x, const glImage *spr );
 
@@ -307,14 +307,14 @@ void glSpriteStretchHorizontal(int x, int y, int length_x, const glImage *spr );
 \param x4,y4 Fourth corner of the sprite.
 \param uoff,voff texture offsets.
 \param flipmode mode for flipping (see GL_FLIP_MODE enum).
-\param *spr pointer to a glImage. 
+\param *spr pointer to a glImage.
 */
 void glSpriteOnQuad( int x1, int y1,
 					 int x2, int y2,
 					 int x3, int y3,
 					 int x4, int y4,
 					 int uoff, int voff,
-					 int flipmode, const glImage *spr 
+					 int flipmode, const glImage *spr
 				   );
 
 
@@ -326,13 +326,13 @@ void glSpriteOnQuad( int x1, int y1,
 \param type The format of the texture ( see glTexImage2d() ).
 \param sizeX The horizontal size of the texture; valid sizes are enumerated in GL_TEXTURE_TYPE_ENUM ( see glTexImage2d() ).
 \param sizeY The vertical size of the texture; valid sizes are enumerated in GL_TEXTURE_TYPE_ENUM ( see glTexImage2d() ).
-\param param parameters for the texture ( see glTexImage2d() ). 
-\param pallette_width Length of the palette. Valid values are <b>4, 16, 32, 256</b> (if <b>0</b>, then palette is removed from currently bound texture). 
+\param param parameters for the texture ( see glTexImage2d() ).
+\param pallette_width Length of the palette. Valid values are <b>4, 16, 32, 256</b> (if <b>0</b>, then palette is removed from currently bound texture).
 \param *palette Pointer to the palette data to load (if NULL, then palette is removed from currently bound texture).
 \param *texture Pointer to the texture data to load.
 */
 int glLoadSpriteSet( glImage              *sprite,
-                     const unsigned int   numframes, 
+                     const unsigned int   numframes,
 					 const unsigned int   *texcoords,
 					 GL_TEXTURE_TYPE_ENUM type,
 					 int 	              sizeX,
@@ -340,7 +340,7 @@ int glLoadSpriteSet( glImage              *sprite,
 					 int 	              param,
 					 int				  pallette_width,
 					 const u16			  *palette,
-					 const uint8          *texture	 
+					 const uint8          *texture
                    );
 
 
@@ -354,8 +354,8 @@ int glLoadSpriteSet( glImage              *sprite,
 \param type The format of the texture ( see glTexImage2d() ).
 \param sizeX The horizontal size of the texture; valid sizes are enumerated in GL_TEXTURE_TYPE_ENUM ( see glTexImage2d() ).
 \param sizeY The vertical size of the texture; valid sizes are enumerated in GL_TEXTURE_TYPE_ENUM ( see glTexImage2d() ).
-\param param parameters for the texture ( see glTexImage2d() ). 
-\param pallette_width Length of the palette. Valid values are <b>4, 16, 32, 256</b> (if <b>0</b>, then palette is removed from currently bound texture). 
+\param param parameters for the texture ( see glTexImage2d() ).
+\param pallette_width Length of the palette. Valid values are <b>4, 16, 32, 256</b> (if <b>0</b>, then palette is removed from currently bound texture).
 \param *palette Pointer to the palette data to load (if NULL, then palette is removed from currently bound texture).
 \param *texture Pointer to the texture data to load.
 */
@@ -370,11 +370,11 @@ int glLoadTileSet( glImage              *sprite,
 				   int 	                param,
 				   int					pallette_width,
 				   const u16			*palette,
-				   const uint8          *texture	 
+				   const uint8          *texture
                  );
 
-				 
-				 
+
+
 #ifdef __cplusplus
 }
 #endif

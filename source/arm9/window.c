@@ -112,5 +112,5 @@ void oamWindowDisable(OamState* oam, WINDOW w) {
   if (w & WINDOW_OUT) mask |= BIT(20);
   if (w & WINDOW_OBJ) mask |= BIT(28);
 
-  *win &= ~mask; 
+  *win &= ~mask;
 }

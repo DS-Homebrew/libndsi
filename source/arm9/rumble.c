@@ -11,7 +11,7 @@
 	Permission is granted to anyone to use this software for any
 	purpose, including commercial applications, and to alter it and
 	redistribute it freely, subject to the following restrictions:
- 
+
   1. The origin of this software must not be misrepresented; you
      must not claim that you wrote the original software. If you use
      this software in a product, an acknowledgment in the product
@@ -20,7 +20,7 @@
      must not be misrepresented as being the original software.
   3. This notice may not be removed or altered from any source
      distribution.
-	
+
 ---------------------------------------------------------------------------------*/
 #include <nds/ndstypes.h>
 #include <nds/memory.h>
@@ -49,7 +49,7 @@ bool isRumbleInserted(void) {
 			return true;
 		}
 		return false;
-				
+
 	} else {
 
 		rumbleType = RUMBLE;
@@ -66,7 +66,7 @@ void setRumble(bool position) {
 //---------------------------------------------------------------------------------
 
 	if (rumbleType == WARIOWARE) {
-		WARIOWARE_PAK = (position ? 8 : 0); 
+		WARIOWARE_PAK = (position ? 8 : 0);
 	} else {
 		RUMBLE_PAK = (position ? 2 : 0);
 	}

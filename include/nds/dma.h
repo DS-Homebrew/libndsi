@@ -111,10 +111,10 @@ dmaCopy(source, destination, sizeof(dataToCopy));
 #define DMA_COPY_HALFWORDS (DMA_ENABLE | DMA_16_BIT | DMA_START_NOW)
 #define DMA_FIFO	(DMA_ENABLE | DMA_32_BIT  | DMA_DST_FIX | DMA_START_FIFO)
 
-static inline 
+static inline
 /*! \fn void dmaCopyWords(uint8 channel, const void* src, void* dest, uint32 size)
     \brief copies from source to destination on one of the 4 available channels in words
-    \param channel the dma channel to use (0 - 3).  
+    \param channel the dma channel to use (0 - 3).
     \param src the source to copy from
     \param dest the destination to copy to
     \param size the size in bytes of the data to copy.  Will be truncated to the nearest word (4 bytes)
@@ -126,10 +126,10 @@ void dmaCopyWords(uint8 channel, const void* src, void* dest, uint32 size) {
 	while (DMA_CR(channel) & DMA_BUSY);
 }
 
-static inline 
+static inline
 /*! \fn void dmaCopyHalfWords(uint8 channel, const void* src, void* dest, uint32 size)
 \brief copies from source to destination on one of the 4 available channels in half words
-\param channel the dma channel to use (0 - 3).  
+\param channel the dma channel to use (0 - 3).
 \param src the source to copy from
 \param dest the destination to copy to
 \param size the size in bytes of the data to copy.  Will be truncated to the nearest half word (2 bytes)
@@ -141,9 +141,9 @@ void dmaCopyHalfWords(uint8 channel, const void* src, void* dest, uint32 size) {
 	while (DMA_CR(channel) & DMA_BUSY);
 }
 
-static inline 
+static inline
 /*! \fn void dmaCopy(const void * source, void * dest, uint32 size)
-\brief copies from source to destination using channel 3 of DMA available channels in half words  
+\brief copies from source to destination using channel 3 of DMA available channels in half words
 \param source the source to copy from
 \param dest the destination to copy to
 \param size the size in bytes of the data to copy.  Will be truncated to the nearest half word (2 bytes)
@@ -155,11 +155,11 @@ void dmaCopy(const void * source, void * dest, uint32 size) {
 	while (DMA_CR(3) & DMA_BUSY);
 }
 
-static inline 
+static inline
 /*! \fn void dmaCopyWordsAsynch(uint8 channel, const void* src, void* dest, uint32 size)
-\brief copies from source to destination on one of the 4 available channels in half words.  
+\brief copies from source to destination on one of the 4 available channels in half words.
 This function returns immediately after starting the transfer.
-\param channel the dma channel to use (0 - 3).  
+\param channel the dma channel to use (0 - 3).
 \param src the source to copy from
 \param dest the destination to copy to
 \param size the size in bytes of the data to copy.  Will be truncated to the nearest word (4 bytes)
@@ -171,11 +171,11 @@ void dmaCopyWordsAsynch(uint8 channel, const void* src, void* dest, uint32 size)
 
 }
 
-static inline 
+static inline
 /*! \fn void dmaCopyHalfWordsAsynch(uint8 channel, const void* src, void* dest, uint32 size)
-\brief copies from source to destination on one of the 4 available channels in half words.  
+\brief copies from source to destination on one of the 4 available channels in half words.
 This function returns immediately after starting the transfer.
-\param channel the dma channel to use (0 - 3).  
+\param channel the dma channel to use (0 - 3).
 \param src the source to copy from
 \param dest the destination to copy to
 \param size the size in bytes of the data to copy.  Will be truncated to the nearest half word (2 bytes)
@@ -186,9 +186,9 @@ void dmaCopyHalfWordsAsynch(uint8 channel, const void* src, void* dest, uint32 s
 	DMA_CR(channel) = DMA_COPY_HALFWORDS | (size>>1);
 }
 
-static inline 
+static inline
 /*! \fn void dmaCopyAsynch(const void* src, void* dest, uint32 size)
-\brief copies from source to destination using channel 3 of DMA available channels in half words.  
+\brief copies from source to destination using channel 3 of DMA available channels in half words.
 This function returns immediately after starting the transfer.
 \param src the source to copy from
 \param dest the destination to copy to
@@ -200,7 +200,7 @@ void dmaCopyAsynch(const void * source, void * dest, uint32 size) {
 	DMA_CR(3) = DMA_COPY_HALFWORDS | (size>>1);
 }
 
-static inline 
+static inline
 /*! \fn void dmaFillWords( u32 value, void* dest, uint32 size)
 \brief fills the source with the supplied value using DMA channel 3
 
@@ -222,7 +222,7 @@ void dmaFillWords(u32 value, void* dest, uint32 size) {
 	while (DMA_CR(3) & DMA_BUSY);
 }
 
-static inline 
+static inline
 /*! \fn void dmaFillHalfWords( u16 value, void* dest, uint32 size)
 \brief fills the source with the supplied value using DMA channel 3
 
@@ -244,10 +244,10 @@ void dmaFillHalfWords(u16 value, void* dest, uint32 size) {
 	while (DMA_CR(3) & DMA_BUSY);
 }
 
-static inline 
+static inline
 /*! \fn dmaBusy(uint8 channel)
 \brief determines if the specified channel is busy
-\param channel the dma channel to check (0 - 3).  
+\param channel the dma channel to check (0 - 3).
 \return non zero if busy, 0 if channel is free
 */
 int dmaBusy(uint8 channel) {

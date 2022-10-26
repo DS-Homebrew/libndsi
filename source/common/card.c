@@ -89,7 +89,7 @@ u32 cardWriteAndRead(const u8 *command, u32 flags) {
 void cardParamCommand (u8 command, u32 parameter, u32 flags, u32 *destination, u32 length) {
 //---------------------------------------------------------------------------------
 	u8 cmdData[8];
-	
+
 	cmdData[7] = (u8) command;
 	cmdData[6] = (u8) (parameter >> 24);
 	cmdData[5] = (u8) (parameter >> 16);
@@ -113,7 +113,7 @@ void cardReadHeader(u8 *header) {
 	while (REG_ROMCTRL&CARD_BUSY) ;
 	cardReset();
 	while (REG_ROMCTRL&CARD_BUSY) ;
-	
+
 	cardParamCommand(CARD_CMD_HEADER_READ,0,CARD_ACTIVATE|CARD_nRESET|CARD_CLK_SLOW|CARD_BLK_SIZE(1)|CARD_DELAY1(0x1FFF)|CARD_DELAY2(0x3F),(u32*)header,512/4);
 }
 

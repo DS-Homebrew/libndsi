@@ -32,11 +32,11 @@ int loadPCX(const unsigned char* pcx, sImage* image) {
 //---------------------------------------------------------------------------------
 	//struct rgb {unsigned char b,g,r;};
 	RGB_24* pal;
-	
+
 	PCXHeader* hdr = (PCXHeader*) pcx;
 
 	pcx += sizeof(PCXHeader);
-	
+
 	unsigned char c;
 	int size;
 	int count;
@@ -55,7 +55,7 @@ int loadPCX(const unsigned char* pcx, sImage* image) {
 
 	if (hdr->bitsPerPixel != 8)
 		return 0;
-	
+
 	scanline = image->image.data8 = (unsigned char*)malloc(size);
 	image->palette = (unsigned short*)malloc(256 * 2);
 
@@ -66,14 +66,14 @@ int loadPCX(const unsigned char* pcx, sImage* image) {
 		while (count < scansize)
 		{
 			c = *pcx++;
-			
+
 			if (c < 192) {
 				scanline[count++] = c;
 			} else {
 				run = c - 192;
-			
+
 				c = *pcx++;
-				
+
 				for (i = 0; i < run && count < scansize; i++)
 					scanline[count++] = c;
 			}

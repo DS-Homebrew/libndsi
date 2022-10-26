@@ -135,10 +135,10 @@ void cardWriteEeprom(u32 address, u8 *data, u32 length, u32 addrtype);
 
 // Returns the ID of the EEPROM chip? Doesn't work well, most chips give ff,ff
 // i = 0 or 1
-u32 cardEepromReadID(); 
+u32 cardEepromReadID();
 
 // Sends a command to the EEPROM
-u8 cardEepromCommand(u8 command); 
+u8 cardEepromCommand(u8 command);
 
 /*
  * -1:no card or no EEPROM

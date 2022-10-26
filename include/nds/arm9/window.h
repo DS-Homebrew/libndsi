@@ -44,19 +44,19 @@ typedef enum {
   WINDOW_1    = DISPLAY_WIN1_ON,	//!< Window 1
   WINDOW_OBJ  = DISPLAY_SPR_WIN_ON, //!< Object window
   WINDOW_OUT  = BIT(16),			//!< Area outside all windows
- 
+
 }WINDOW;
 
-#define WINDOW_MASK  (WINDOW_0|WINDOW_1|WINDOW_OBJ) 
+#define WINDOW_MASK  (WINDOW_0|WINDOW_1|WINDOW_OBJ)
 
-static inline 
+static inline
 /**
 *    \brief Enable the specified window(s)
 *    \param window The window to set bounds on (may be ORed together)
 */
 void windowEnable(WINDOW w)     { REG_DISPCNT     |= w & WINDOW_MASK;    }
 
-static inline 
+static inline
 /**
 *    \brief Enable the specified window(s)
 *    \param window The window to set bounds on (may be ORed together)

@@ -135,9 +135,9 @@ void firmwareMsgHandler(int bytes, void *user_data) {
 	FifoMessage msg;
 
 	int response = -1;
-	
+
 	fifoGetDatamsg(FIFO_FIRMWARE, bytes, (u8*)&msg);
-	
+
 	switch (msg.type) {
 		case FW_READ:
 			readFirmware(msg.blockParams.address, msg.blockParams.buffer, msg.blockParams.length);

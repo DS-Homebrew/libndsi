@@ -95,7 +95,7 @@ uint16 touchRead(uint32 command) {
 	uint32 oldIME = REG_IME;
 
 	REG_IME = 0;
-	
+
 	SerialWaitBusy();
 
 	// Write the command and wait for it to complete

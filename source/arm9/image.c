@@ -24,7 +24,7 @@
 	3.	This notice may not be removed or altered from any source
 		distribution.
 
-	
+
 
 
 ---------------------------------------------------------------------------------*/
@@ -113,13 +113,13 @@ void image8to16trans(sImage* img, u8 transparentColor) {
 void imageTileData(sImage* img) {
 //---------------------------------------------------------------------------------
 	u32* temp;
-	
+
 	int ix, iy, tx, ty;
 
 	int th, tw;
 
 	int i = 0;
-	
+
 	//can only tile 8 bit data that is a multiple of 8 in dimention
 	if (img->bpp != 8 || (img->height & 3) != 0 || (img->width & 3) != 0) return;
 
@@ -127,16 +127,16 @@ void imageTileData(sImage* img) {
 	tw = img->width >> 3;
 
 	//buffer to hold data
-	temp = (u32*)malloc(img->height * img->width);	
+	temp = (u32*)malloc(img->height * img->width);
 
 	for (ty = 0; ty < th; ty++)
 		for (tx = 0; tx < tw; tx++)
 			for (iy = 0; iy < 8; iy++)
 				for (ix = 0; ix < 2; ix++)
-					temp[i++] = img->image.data32[ix + tx * 2 + (iy + ty * 8) * tw * 2 ]; 
+					temp[i++] = img->image.data32[ix + tx * 2 + (iy + ty * 8) * tw * 2 ];
 
 	free(img->image.data32);
-	
+
 	img->image.data32 = (u32*)temp;
 }
 

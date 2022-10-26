@@ -4,7 +4,7 @@
 extern char *fake_heap_end;
 
 void __attribute__((weak)) systemErrorExit(int rc) {
-	
+
 }
 
 void __libndsi_exit(int rc) {
@@ -15,7 +15,7 @@ void __libndsi_exit(int rc) {
 	struct __bootstub *bootcode = __transferRegion()->bootcode;
 
 	if (bootcode->bootsig == BOOTSIG) {
-		
+
 #ifdef ARM9
 		bootcode->arm9reboot();
 #endif
@@ -25,6 +25,6 @@ void __libndsi_exit(int rc) {
 	} else {
 		systemShutDown();
 	}
-	
+
 	while (1);
 }
