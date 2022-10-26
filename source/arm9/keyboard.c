@@ -377,8 +377,6 @@ Keyboard* keyboardDemoInit(void) {
 }
 
 void keyboardShow(void) {
-	int i;
-
 	swiWaitForVBlank();
 
 	curKeyboard->visible = 1;
@@ -387,10 +385,8 @@ void keyboardShow(void) {
 
 	bgShow(curKeyboard->background);
 
-	if (curKeyboard->scrollSpeed)
-	{
-		for (i = -192; i < curKeyboard->offset_y; i += curKeyboard->scrollSpeed)
-		{
+	if (curKeyboard->scrollSpeed) {
+		for (int i = -192; i < curKeyboard->offset_y; i += curKeyboard->scrollSpeed) {
 			swiWaitForVBlank();
 			bgSetScroll(curKeyboard->background, 0, i);
 			bgUpdate();
@@ -402,14 +398,10 @@ void keyboardShow(void) {
 }
 
 void keyboardHide(void) {
-	int i;
-
 	curKeyboard->visible = 0;
 
-	if (curKeyboard->scrollSpeed)
-	{
-		for (i = curKeyboard->offset_y; i > -192; i-= curKeyboard->scrollSpeed)
-		{
+	if (curKeyboard->scrollSpeed) {
+		for (int i = curKeyboard->offset_y; i > -192; i-= curKeyboard->scrollSpeed) {
 			swiWaitForVBlank();
 			bgSetScroll(curKeyboard->background, 0, i);
 			bgUpdate();
@@ -420,13 +412,10 @@ void keyboardHide(void) {
 }
 
 int keyboardGetChar(void) {
-	int pressed;
-
-
 	while (1) {
 		swiWaitForVBlank();
 		scanKeys();
-		pressed = keysDown();
+		int pressed = keysDown();
 
 		if (pressed & KEY_TOUCH) {
 			touchPosition touch;
@@ -444,10 +433,9 @@ int keyboardGetChar(void) {
 
 void keyboardGetString(char * buffer, int maxLen) {
 	char *end = buffer + maxLen;
-	char c;
 
 	while (buffer < end) {
-		c = (char)keyboardGetChar();
+		char c = (char)keyboardGetChar();
 
 		if (c == DVK_ENTER) break;
 
@@ -455,7 +443,3 @@ void keyboardGetString(char * buffer, int maxLen) {
 	}
 	*buffer = 0;
 }
-
-
-
-

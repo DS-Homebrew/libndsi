@@ -387,10 +387,9 @@ int fifoGetDatamsg(int channel, int buffersize, u8 * destbuffer) {
 	int	num_words = (num_bytes+3)>>2;
 	u32 buffer_array[num_words];
 
-	int i,next;
-	for (i=0; i<num_words;i++) {
+	for (int i=0; i<num_words;i++) {
 		buffer_array[i] = FIFO_BUFFER_DATA(block);
-		next=FIFO_BUFFER_GETNEXT(block);
+		int next=FIFO_BUFFER_GETNEXT(block);
 		fifo_freeBlock(block);
 		block=next;
 		if (block==FIFO_BUFFER_TERMINATE) break;

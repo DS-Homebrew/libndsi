@@ -208,19 +208,15 @@ ssize_t nocash_write(struct _reent *r, void *fd, const char *ptr, size_t len) {
 ssize_t con_write(struct _reent *r,void *fd,const char *ptr, size_t len) {
 //---------------------------------------------------------------------------------
 
-	char chr;
-
-	int i, count = 0;
+	int i = 0, count = 0;
 	char *tmp = (char*)ptr;
 	int intensity = 0;
 
 	if (!tmp || len<=0) return -1;
 
-	i = 0;
-
 	while (i<len) {
 
-		chr = *(tmp++);
+		char chr = *(tmp++);
 		i++; count++;
 
 		if (chr == 0x1b && *tmp == '[') {

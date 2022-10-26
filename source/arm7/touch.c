@@ -65,7 +65,7 @@ static u8 CheckStylus() {
 	if (last_time_touched == 1) {
 		if (!(REG_KEYXY & 0x40) )
 			return 1;
-		else{
+		else {
 			REG_SPICNT = SPI_ENABLE | SPI_BAUD_2MHz | SPI_DEVICE_TOUCH | SPI_CONTINUOUS;
 			REG_SPIDATA = TSC_MEASURE_TEMP1;
 

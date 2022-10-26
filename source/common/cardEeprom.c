@@ -50,15 +50,13 @@ u8 cardEepromCommand(u8 command) {
 //---------------------------------------------------------------------------------
 u32 cardEepromReadID() {
 //---------------------------------------------------------------------------------
-	int i;
-
 	REG_AUXSPICNT = /*E*/0x8000 | /*SEL*/0x2000 | /*MODE*/0x40;
 
 	REG_AUXSPIDATA = SPI_EEPROM_RDID;
 
 	eepromWaitBusy();
 	u32 id = 0;
-	for (i=0; i<3; i++) {
+	for (int i=0; i<3; i++) {
 		REG_AUXSPIDATA = 0;
 		eepromWaitBusy();
 		id = (id << 8) | REG_AUXSPIDATA;
@@ -89,103 +87,101 @@ uint32 cardEepromGetSize() {
 //---------------------------------------------------------------------------------
 
 	int type = cardEepromGetType();
+	switch (type) {
+		case 0:
+			return 8192;
+			break;
+		case 1:
+			return 512;
+			break;
+		case 2: {
+			u32 buf1,buf2,buf3 = 0x54534554; // "TEST"
+			// Save the first word of the EEPROM
+			cardReadEeprom(0,(u8*)&buf1,4,type);
 
-	if (type == -1)
-		return 0;
-	if (type == 0)
-		return 8192;
-	if (type == 1)
-		return 512;
-	if (type == 2) {
-		u32 buf1,buf2,buf3 = 0x54534554; // "TEST"
-		// Save the first word of the EEPROM
-		cardReadEeprom(0,(u8*)&buf1,4,type);
+			// Write "TEST" to it
+			cardWriteEeprom(0,(u8*)&buf3,4,type);
 
-		// Write "TEST" to it
-		cardWriteEeprom(0,(u8*)&buf3,4,type);
-
-		// Loop until the EEPROM mirrors and the first word shows up again
-		int size = 8192;
-		while (1) {
-			cardReadEeprom(size,(u8*)&buf2,4,type);
-			// Check if it matches, if so check again with another value to ensure no false positives
-			if (buf2 == buf3) {
-				u32 buf4 = 0x74736574; // "test"
-				// Write "test" to the first word
-				cardWriteEeprom(0,(u8*)&buf4,4,type);
-
-				// Check if it still matches
+			// Loop until the EEPROM mirrors and the first word shows up again
+			int size = 8192;
+			while (1) {
 				cardReadEeprom(size,(u8*)&buf2,4,type);
-				if (buf2 == buf4) break;
+				// Check if it matches, if so check again with another value to ensure no false positives
+				if (buf2 == buf3) {
+					u32 buf4 = 0x74736574; // "test"
+					// Write "test" to the first word
+					cardWriteEeprom(0,(u8*)&buf4,4,type);
 
-				// False match, write "TEST" back and keep going
-				cardWriteEeprom(0,(u8*)&buf3,4,type);
+					// Check if it still matches
+					cardReadEeprom(size,(u8*)&buf2,4,type);
+					if (buf2 == buf4) break;
+
+					// False match, write "TEST" back and keep going
+					cardWriteEeprom(0,(u8*)&buf3,4,type);
+				}
+				size += 8192;
 			}
-			size += 8192;
+
+			// Restore the first word
+			cardWriteEeprom(0,(u8*)&buf1,4,type);
+
+			return size;
+			break;
+		} case 3: {
+			int id = cardEepromReadID();
+
+			int device = id & 0xffff;
+
+			if (((id >> 16) & 0xff) == 0x20) { // ST
+
+				switch (device) {
+
+				case 0x4014:
+					return 1024*1024;		//	8Mbit(1 meg)
+					break;
+				case 0x4013:
+				case 0x8013:				// M25PE40
+					return 512*1024;		//	4Mbit(512KByte)
+					break;
+				case 0x2017:
+					return 8*1024*1024;		//	64Mbit(8 meg)
+					break;
+				}
+			}
+
+			if (((id >> 16) & 0xff) == 0x62) { // Sanyo
+				if (device == 0x1100)
+					return 512*1024;		//	4Mbit(512KByte)
+
+			}
+
+			if (((id >> 16) & 0xff) == 0xC2) { // Macronix
+				switch (device) {
+
+				case 0x2211:
+					return 128*1024;		//	1Mbit(128KByte) - MX25L1021E
+					break;
+				case 0x2017:
+					return 8*1024*1024;		//	64Mbit(8 meg)
+					break;
+				}
+			}
+
+			if (id == 0xffffff) {
+				int sr = cardEepromCommand(SPI_EEPROM_RDSR);
+				if (sr == 2) { // Pokémon Mystery Dungeon - Explorers of Sky
+					return 128*1024; // 1Mbit (128KByte)
+				}
+			}
+
+
+			return 256*1024;		//	2Mbit(256KByte)
+			break;
 		}
-
-		// Restore the first word
-		cardWriteEeprom(0,(u8*)&buf1,4,type);
-
-		return size;
+		// case -1
+		default:
+			return 0;
 	}
-
-	int device;
-
-	if (type == 3) {
-		int id = cardEepromReadID();
-
-		device = id & 0xffff;
-
-		if (((id >> 16) & 0xff) == 0x20) { // ST
-
-			switch (device) {
-
-			case 0x4014:
-				return 1024*1024;		//	8Mbit(1 meg)
-				break;
-			case 0x4013:
-			case 0x8013:				// M25PE40
-				return 512*1024;		//	4Mbit(512KByte)
-				break;
-			case 0x2017:
-				return 8*1024*1024;		//	64Mbit(8 meg)
-				break;
-			}
-		}
-
-		if (((id >> 16) & 0xff) == 0x62) { // Sanyo
-
-			if (device == 0x1100)
-				return 512*1024;		//	4Mbit(512KByte)
-
-		}
-
-		if (((id >> 16) & 0xff) == 0xC2) { // Macronix
-
-			switch (device) {
-
-			case 0x2211:
-				return 128*1024;		//	1Mbit(128KByte) - MX25L1021E
-				break;
-			case 0x2017:
-				return 8*1024*1024;		//	64Mbit(8 meg)
-				break;
-			}
-		}
-
-		if (id == 0xffffff) {
-			int sr = cardEepromCommand(SPI_EEPROM_RDSR);
-			if (sr == 2) { // Pokémon Mystery Dungeon - Explorers of Sky
-				return 128*1024; // 1Mbit (128KByte)
-			}
-		}
-
-
-		return 256*1024;		//	2Mbit(256KByte)
-	}
-
-	return 0;
 }
 
 
@@ -231,7 +227,7 @@ void cardWriteEeprom(uint32 address, uint8 *data, uint32 length, uint32 addrtype
 	int i;
 	int maxblocks = 32;
 	if (addrtype == 1) maxblocks = 16;
-	if (addrtype == 2) maxblocks = 32;
+	//if (addrtype == 2) maxblocks = 32; - Already defined above
 	if (addrtype == 3) maxblocks = 256;
 
 	while (address < address_end) {

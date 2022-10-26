@@ -36,35 +36,34 @@
 unsigned long ARMShift(unsigned long value,unsigned char shift) {
 //---------------------------------------------------------------------------------
 	// no shift at all
-	if (shift == 0x0B) return value ;
-	int index ;
+	if (shift == 0x0B) return value;
+	int index;
 	if (shift & 0x01) {
 		// shift index is a register
 		index = exceptionRegisters[(shift >> 4) & 0x0F];
 	} else {
 		// constant shift index
 		index = ((shift >> 3) & 0x1F) ;
-	} ;
-	int i ;
-	bool isN ;
+	}
+
 	switch (shift & 0x06) {
 		case 0x00:
 			// logical left
-			return (value << index) ;
+			return (value << index);
 		case 0x02:
 			// logical right
-			return (value >> index) ;
-		case 0x04:
+			return (value >> index);
+		case 0x04: {
 			// arithmetical right
-			isN = (value & 0x80000000) ;
-			value = value >> index ;
+			bool isN = (value & 0x80000000);
+			value = value >> index;
 			if (isN) {
-				for (i=31;i>31-index;i--) {
-					value = value | (1 << i) ;
-				} ;
-			} ;
-			return value ;
-		case 0x06:
+				for (int i=31;i>31-index;i--) {
+					value = value | (1 << i);
+				}
+			}
+			return value;
+		} case 0x06:
 			// rotate right
 			index = index & 0x1F;
 			value = (value >> index) | (value << (32-index));

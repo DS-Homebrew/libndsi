@@ -61,7 +61,7 @@ void powerValueHandler(u32 value, void* user_data) {
 //---------------------------------------------------------------------------------
 	u32 temp;
 	u32 ie_save;
-	int battery, backlight, power;
+	int battery, power;
 
 	switch (value & 0xFFFF0000) {
 		//power control
@@ -115,17 +115,17 @@ void powerValueHandler(u32 value, void* user_data) {
 	case PM_REQ_SLEEP_ENABLE:
 		sleepIsEnabled = true;
 		break;
-	case PM_REQ_BATTERY:
+	case PM_REQ_BATTERY: {
 		if (!isDSiMode()) {
 			battery = (readPowerManagement(PM_BATTERY_REG) & 1)?3:15;
-			backlight = readPowerManagement(PM_BACKLIGHT_LEVEL);
+			int backlight = readPowerManagement(PM_BACKLIGHT_LEVEL);
 			if (backlight & (1<<6)) battery += (backlight & (1<<3))<<4;
 		} else {
 			battery = i2cReadRegister(I2C_PM,I2CREGPM_BATTERY);
 		}
 		fifoSendValue32(FIFO_PM, battery);
 		break;
-	case PM_REQ_SLOT1_DISABLE:
+	} case PM_REQ_SLOT1_DISABLE:
 		disableSlot1();
 		break;
 	case PM_REQ_SLOT1_ENABLE:
